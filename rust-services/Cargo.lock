@@ -107,6 +107,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "marine-sqlite-connector"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3a4afe9c9fe1b474f3a90cee107a827afcc606946f46eb9fdb3f7e073cb034d2"
+dependencies = [
+ "marine-rs-sdk",
+]
+
+[[package]]
 name = "marine-timestamp-macro"
 version = "0.6.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -170,6 +179,7 @@ version = "0.1.0"
 dependencies = [
  "log",
  "marine-rs-sdk",
+ "marine-sqlite-connector",
 ]
 
 [[package]]
