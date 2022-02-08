@@ -13,3 +13,4 @@ path = "src/main.rs"
 marine-rs-sdk ={ version = "0.6.13", features = ["logger"] }
 log = "0.4.8"
 marine-sqlite-connector = "0.5.0"
+marine = "0.6.13"
