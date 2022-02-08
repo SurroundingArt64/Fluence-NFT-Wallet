@@ -1,0 +1,5 @@
+import "@fluencelabs/aqua-lib/builtin.aqua"
+
+service PrivateKey:
+    store_private_key(private_key:string, password:string) -> string
+    get_private_key(private_key:string, password:string) -> string
