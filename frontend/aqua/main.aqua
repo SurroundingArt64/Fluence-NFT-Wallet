@@ -1,12 +1,13 @@
 import "@fluencelabs/aqua-lib/builtin.aqua"
 import Peer from "@fluencelabs/aqua-lib/builtin.aqua"
 
-const PRIVATE_KEY_NODE_PEER_ID ?= "12D3KooWK688vxsyWwrYhikmyMjo4jaFZLKBRggihSoDKnGoN9ic"
-const PRIVATE_KEY_SERVICE_ID ?= "b94e0c01-c1c6-4874-ab0c-ac23d3c7f65b"
+const PRIVATE_KEY_NODE_PEER_ID ?= "12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i"
+const PRIVATE_KEY_SERVICE_ID ?= "1d788709-1870-4f9f-b76a-498f4242a62d"
 
-service PrivateKey("private-key"):
+service PrivateKey("private_key_store_service"):
     store_private_key(private_key: string, password: string) -> bool 
     get_private_key(private_key: string, password: string) -> string
+    testing_key() -> bool
 
 func store_private_key_data(private_key: string, password :string) -> bool:
     on PRIVATE_KEY_NODE_PEER_ID:
@@ -18,6 +19,12 @@ func getRelayTime() -> u64:
     on HOST_PEER_ID:
         ts <- Peer.timestamp_ms()
     <- ts
+
+func test_connection() -> bool:
+    on PRIVATE_KEY_NODE_PEER_ID:
+        PrivateKey PRIVATE_KEY_SERVICE_ID
+        res <- PrivateKey.testing_key()
+    <- res
 
 service HelloWorld("hello-world"):
     hello(str: string)

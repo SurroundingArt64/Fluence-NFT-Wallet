@@ -19,6 +19,7 @@ import {
 export interface PrivateKeyDef {
     get_private_key: (private_key: string, password: string, callParams: CallParams<'private_key' | 'password'>) => string | Promise<string>;
     store_private_key: (private_key: string, password: string, callParams: CallParams<'private_key' | 'password'>) => boolean | Promise<boolean>;
+    testing_key: (callParams: CallParams<null>) => boolean | Promise<boolean>;
 }
 export function registerPrivateKey(service: PrivateKeyDef): void;
 export function registerPrivateKey(serviceId: string, service: PrivateKeyDef): void;
@@ -30,7 +31,7 @@ export function registerPrivateKey(...args: any) {
     registerService(
         args,
         {
-    "defaultServiceId" : "private-key",
+    "defaultServiceId" : "private_key_store_service",
     "functions" : [
         {
             "functionName" : "get_private_key",
@@ -67,6 +68,14 @@ export function registerPrivateKey(...args: any) {
                         "tag" : "primitive"
                     }
                 }
+            ],
+            "returnType" : {
+                "tag" : "primitive"
+            }
+        },
+        {
+            "functionName" : "testing_key",
+            "argDefs" : [
             ],
             "returnType" : {
                 "tag" : "primitive"
@@ -125,38 +134,73 @@ export function registerHelloWorld(...args: any) {
 // Functions
  
 
-export function store_private_key_data(
-    private_key: string,
-    password: string,
+export function sayHello(
     config?: {ttl?: number}
-): Promise<boolean>;
+): Promise<void>;
 
-export function store_private_key_data(
+export function sayHello(
     peer: FluencePeer,
-    private_key: string,
-    password: string,
+    config?: {ttl?: number}
+): Promise<void>;
+
+export function sayHello(...args: any) {
+
+    let script = `
+                    (xor
+                     (seq
+                      (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                      (call %init_peer_id% ("hello-world" "hello") ["Hello, world!"])
+                     )
+                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                    )
+    `
+    return callFunction(
+        args,
+        {
+    "functionName" : "sayHello",
+    "returnType" : {
+        "tag" : "void"
+    },
+    "argDefs" : [
+    ],
+    "names" : {
+        "relay" : "-relay-",
+        "getDataSrv" : "getDataSrv",
+        "callbackSrv" : "callbackSrv",
+        "responseSrv" : "callbackSrv",
+        "responseFnName" : "response",
+        "errorHandlingSrv" : "errorHandlingSrv",
+        "errorFnName" : "error"
+    }
+},
+        script
+    )
+}
+
+ 
+
+export function test_connection(
     config?: {ttl?: number}
 ): Promise<boolean>;
 
-export function store_private_key_data(...args: any) {
+export function test_connection(
+    peer: FluencePeer,
+    config?: {ttl?: number}
+): Promise<boolean>;
+
+export function test_connection(...args: any) {
 
     let script = `
                     (xor
                      (seq
                       (seq
                        (seq
-                        (seq
-                         (seq
-                          (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
-                          (call %init_peer_id% ("getDataSrv" "private_key") [] private_key)
-                         )
-                         (call %init_peer_id% ("getDataSrv" "password") [] password)
-                        )
+                        (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
                         (call -relay- ("op" "noop") [])
                        )
                        (xor
                         (seq
-                         (call "12D3KooWK688vxsyWwrYhikmyMjo4jaFZLKBRggihSoDKnGoN9ic" ("b94e0c01-c1c6-4874-ab0c-ac23d3c7f65b" "store_private_key") [private_key password] res)
+                         (call "12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i" ("1d788709-1870-4f9f-b76a-498f4242a62d" "testing_key") [] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -176,23 +220,11 @@ export function store_private_key_data(...args: any) {
     return callFunction(
         args,
         {
-    "functionName" : "store_private_key_data",
+    "functionName" : "test_connection",
     "returnType" : {
         "tag" : "primitive"
     },
     "argDefs" : [
-        {
-            "name" : "private_key",
-            "argType" : {
-                "tag" : "primitive"
-            }
-        },
-        {
-            "name" : "password",
-            "argType" : {
-                "tag" : "primitive"
-            }
-        }
     ],
     "names" : {
         "relay" : "-relay-",
@@ -264,34 +296,74 @@ export function getRelayTime(...args: any) {
 
  
 
-export function sayHello(
+export function store_private_key_data(
+    private_key: string,
+    password: string,
     config?: {ttl?: number}
-): Promise<void>;
+): Promise<boolean>;
 
-export function sayHello(
+export function store_private_key_data(
     peer: FluencePeer,
+    private_key: string,
+    password: string,
     config?: {ttl?: number}
-): Promise<void>;
+): Promise<boolean>;
 
-export function sayHello(...args: any) {
+export function store_private_key_data(...args: any) {
 
     let script = `
                     (xor
                      (seq
-                      (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
-                      (call %init_peer_id% ("hello-world" "hello") ["Hello, world!"])
+                      (seq
+                       (seq
+                        (seq
+                         (seq
+                          (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                          (call %init_peer_id% ("getDataSrv" "private_key") [] private_key)
+                         )
+                         (call %init_peer_id% ("getDataSrv" "password") [] password)
+                        )
+                        (call -relay- ("op" "noop") [])
+                       )
+                       (xor
+                        (seq
+                         (call "12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i" ("1d788709-1870-4f9f-b76a-498f4242a62d" "store_private_key") [private_key password] res)
+                         (call -relay- ("op" "noop") [])
+                        )
+                        (seq
+                         (call -relay- ("op" "noop") [])
+                         (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                        )
+                       )
+                      )
+                      (xor
+                       (call %init_peer_id% ("callbackSrv" "response") [res])
+                       (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
+                      )
                      )
-                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 3])
                     )
     `
     return callFunction(
         args,
         {
-    "functionName" : "sayHello",
+    "functionName" : "store_private_key_data",
     "returnType" : {
-        "tag" : "void"
+        "tag" : "primitive"
     },
     "argDefs" : [
+        {
+            "name" : "private_key",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        },
+        {
+            "name" : "password",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        }
     ],
     "names" : {
         "relay" : "-relay-",

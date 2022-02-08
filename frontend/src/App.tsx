@@ -6,18 +6,18 @@ import { Fluence } from '@fluencelabs/fluence'
 import {
 	getRelayTime,
 	registerHelloWorld,
-	registerPrivateKey,
 	sayHello,
 	store_private_key_data,
 	tellFortune,
+	test_connection,
 } from './_aqua/main'
 
 function App() {
 	useEffect(() => {
 		const run = async () => {
 			const localNode = {
-				multiaddr: '/ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWK688vxsyWwrYhikmyMjo4jaFZLKBRggihSoDKnGoN9ic',
-				peerId: '12D3KooWK688vxsyWwrYhikmyMjo4jaFZLKBRggihSoDKnGoN9ic',
+				multiaddr: '/ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i',
+				peerId: '12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i',
 			}
 			console.log({ krasnodar: krasnodar[0], localNode })
 			await Fluence.start({ connectTo: localNode })
@@ -40,7 +40,9 @@ function App() {
 			await sayHello()
 			await tellFortune()
 			const data = await store_private_key_data('a', 'b')
-			console.log(data.toString() === 'true')
+			console.log(data === true)
+			console.log(await test_connection(), 'Connected')
+			console.log(await test_connection(), 'Already connected')
 			await Fluence.stop()
 		}
 		run()
