@@ -1,3 +1,21 @@
 {
-	"name": "private_key_store"
+	"private_key_store_service": {
+		"name": "private_key_store_service",
+		"modules": [
+			{
+				"name": "sqlite3",
+				"path": "./artifacts/sqlite3.wasm",
+				"preopened_files": ["/tmp"],
+				"mapped_dirs": [["tmp", "/tmp"]],
+				"logger_enabled": [true]
+			},
+			{
+				"name": "private_key_store",
+				"path": "./artifacts/private_key_store.wasm",
+				"preopened_files": ["/tmp"],
+				"mapped_dirs": [["tmp", "/tmp"]],
+				"logger_enabled": [true]
+			}
+		]
+	}
 }
