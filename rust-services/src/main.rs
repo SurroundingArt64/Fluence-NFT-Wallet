@@ -10,7 +10,7 @@ pub fn main() {
 
 #[marine]
 pub fn store_private_key(private_key: String, password: String) -> bool {
-    log::info!("put called with {} {}\n", private_key, password);
+    // log::info!("put called with {} {}\n", private_key, password);
     // get the public key.
     // use public key as index.
     true
@@ -18,7 +18,7 @@ pub fn store_private_key(private_key: String, password: String) -> bool {
 
 #[marine]
 pub fn get_private_key(public_key: String, password: String) -> String {
-    log::info!("get called with {} {}\n", public_key, password);
+    // log::info!("get called with {} {}\n", public_key, password);
     // decode the private key.
     // return it to the caller.
     "".to_string()
