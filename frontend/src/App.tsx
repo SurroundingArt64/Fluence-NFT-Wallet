@@ -19,6 +19,16 @@ function App() {
 			chainId: 4,
 			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
 		},
+		{
+			name: 'Polygon',
+			chainId: 137,
+			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
+		},
+		{
+			name: 'Mumbai',
+			chainId: 80001,
+			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
+		},
 	]
 
 	const [network, setNetwork] = useState(networks[0])
@@ -41,10 +51,17 @@ function App() {
 	useEffect(() => {
 		if (network && currentState === 'CONNECTED' && signer) {
 			let provider = new providers.JsonRpcProvider(network.rpcURL)
-			if (signer.current) {
-				signer.current = signer.current.connect(provider)
-				setEthersConnected((s) => s + 1)
+			const run = async () => {
+				if (signer.current) {
+					signer.current = signer.current.connect(provider)
+					setEthersConnected((s) => s + 1)
+					let balance = await signer.current.getBalance()
+					let address = await signer.current.getAddress()
+
+					setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
+				}
 			}
+			run()
 		}
 	}, [network, currentState])
 
