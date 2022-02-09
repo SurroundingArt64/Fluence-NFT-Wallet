@@ -13,6 +13,8 @@ specifiers:
   '@types/node': ^16.11.22
   '@types/react': ^17.0.39
   '@types/react-dom': ^17.0.11
+  '@types/react-router': ^5.1.18
+  '@types/react-router-dom': ^5.3.3
   axios: ^0.25.0
   chokidar-cli: ^2.1.0
   ethers: ^5.5.4
@@ -33,6 +35,8 @@ dependencies:
   '@types/node': 16.11.22
   '@types/react': 17.0.39
   '@types/react-dom': 17.0.11
+  '@types/react-router': 5.1.18
+  '@types/react-router-dom': 5.3.3
   axios: 0.25.0
   ethers: 5.5.4
   react: 17.0.2
@@ -3634,6 +3638,10 @@ packages:
       '@types/node': 16.11.22
     dev: false
 
+  /@types/history/4.7.11:
+    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
+    dev: false
+
   /@types/html-minifier-terser/5.1.2:
     resolution: {integrity: sha512-h4lTMgMJctJybDp8CQrxTUiiYmedihHWkjnF/8Pxseu2S6Nlfcy8kwboQ8yejh456rP2yWoEVm1sS/FVsfM48w==}
     dev: false
@@ -3701,6 +3709,21 @@ packages:
   /@types/react-dom/17.0.11:
     resolution: {integrity: sha512-f96K3k+24RaLGVu/Y2Ng3e1EbZ8/cVJvypZWd7cy0ofCBaf2lcM46xNhycMZ2xGwbBjRql7hOlZ+e2WlJ5MH3Q==}
     dependencies:
+      '@types/react': 17.0.39
+    dev: false
+
+  /@types/react-router-dom/5.3.3:
+    resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
+    dependencies:
+      '@types/history': 4.7.11
+      '@types/react': 17.0.39
+      '@types/react-router': 5.1.18
+    dev: false
+
+  /@types/react-router/5.1.18:
+    resolution: {integrity: sha512-YYknwy0D0iOwKQgz9v8nOzt2J6l4gouBmDnWqUUznltOTaon+r8US8ky8HvN0tXvc38U9m6z/t2RsVsnd1zM0g==}
+    dependencies:
+      '@types/history': 4.7.11
       '@types/react': 17.0.39
     dev: false
 

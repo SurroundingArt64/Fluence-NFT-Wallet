@@ -34,6 +34,7 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 							setAddr(e.target.value)
 						}}
 						value={addr}
+						required
 					/>
 				</div>
 				<div className='Form'>
@@ -45,6 +46,7 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 							setPassword(e.target.value)
 						}}
 						value={password}
+						required
 					/>
 				</div>
 				<span style={{ height: "25px" }} />

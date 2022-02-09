@@ -70,6 +70,7 @@ Public  Key: ${randomWallet.address}
 						type='password'
 						placeholder='Enter Password'
 						value={state.password}
+						required
 					/>
 				</div>
 				<div className='Form'>
@@ -86,6 +87,7 @@ Public  Key: ${randomWallet.address}
 						type='password'
 						placeholder='Re-enter Password'
 						value={state.repeatPassword}
+						required
 					/>
 				</div>
 				<span style={{ height: "25px" }} />
