@@ -56,7 +56,7 @@ export const NFTWallet: React.FC<{
 			<h1>NFT Wallet</h1>
 			<div className='nft'>
 				{NFTs.map((elem, idx) => (
-					<NFTComponent explorer={network.explorer} idx={idx} elem={elem} />
+					<NFTComponent network={network} idx={idx} elem={elem} />
 				))}
 			</div>
 		</>
