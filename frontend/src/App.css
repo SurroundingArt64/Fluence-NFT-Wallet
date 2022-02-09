@@ -21,7 +21,6 @@
 h1 {
   font-size: 3rem;
   font-weight: 200;
-  margin: 40px 0;
 }
 
 h2 {
@@ -109,12 +108,58 @@ label {
 .network {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
   font-size: large;
   font-weight: 500;
-  border: #000000 solid 1px;
+  border: #ccc solid 2px;
   width: 100%;
   min-width: 450px;
   border-radius: 10px;
+  margin: 10px 0;
+  height: 30px;
+}
+
+select {
+  font-family: 'helvetica neue', helvetica;
+  font-size: 1rem;
+  font-weight: 200;
+  max-width: 100%;
+  padding: 8px 24px 8px 10px;
+  border: none;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select:active,
+select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.dropdown {
+  position: relative;
+  background-color: #e6e6e6;
+  width: auto;
+  float: left;
+  max-width: 100%;
+  border-radius: 2px;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown:after {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  margin-top: -2px;
+  right: 8px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #aaa;
 }

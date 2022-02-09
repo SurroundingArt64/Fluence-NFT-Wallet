@@ -13,32 +13,37 @@ function App() {
 		chainId: number
 		rpcURL: string
 		moralisIdx: string
+		token: string
 	}[] = [
-		{
-			name: 'Ethereum',
-			chainId: 1,
-			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-			moralisIdx: 'eth',
-		},
-		{
-			name: 'Rinkeby',
-			chainId: 4,
-			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-			moralisIdx: 'rinkeby',
-		},
-		{
-			name: 'Polygon',
-			chainId: 137,
-			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
-			moralisIdx: 'polygon',
-		},
-		{
-			name: 'Mumbai',
-			chainId: 80001,
-			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
-			moralisIdx: 'mumbai',
-		},
-	]
+			{
+				name: 'Ethereum',
+				chainId: 1,
+				rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+				moralisIdx: 'eth',
+				token: 'ETH'
+			},
+			{
+				name: 'Rinkeby',
+				chainId: 4,
+				rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+				moralisIdx: 'rinkeby',
+				token: 'rETH'
+			},
+			{
+				name: 'Polygon',
+				chainId: 137,
+				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
+				moralisIdx: 'polygon',
+				token: 'MATIC'
+			},
+			{
+				name: 'Mumbai',
+				chainId: 80001,
+				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
+				moralisIdx: 'mumbai',
+				token: 'tMATIC'
+			},
+		]
 
 	const [network, setNetwork] = useState(networks[0])
 
@@ -115,26 +120,29 @@ function App() {
 						<div className='Connected'>
 							<h1>Settings</h1>
 							<div className='network'>
-								<div className='address'>
-									{state.address.length > 0
-										? state.address.substring(0, 6) + '****' + state.address.substring(38, 42)
-										: 'Loading Account...'}
-								</div>
-								<div className='balance'>{state.balance} ETH</div>
+								<div className='address'>{state.address.length > 0 ? state.address.substring(0, 6) + "****" + state.address.substring(38, 42) : "Loading Account..."}</div>
+								<div className='balance'>{state.balance} {state.balance ? network.token : "⚠️"}</div>
 							</div>
 							<h2 className='network'>
-								<div>Switch Network</div>
-								{networks.map((elem) => {
-									return (
-										<>
-											<div
-												style={{ cursor: 'pointer' }}
-												onClick={() => setNetwork(elem)}
-												className=''
-											>{`${elem.name}(${elem.chainId})`}</div>
-										</>
-									)
-								})}
+								<div>
+									Choose Network
+								</div>
+								<button className='dropdown'>
+									<select onChange={(e) => setNetwork(networks.filter((s) =>
+										s.name === e.target.value
+									)[0])}>
+										{networks.map((elem) => {
+											return (
+												<option
+													style={{ cursor: 'pointer' }}
+													value={elem.name}
+												>
+													{`${elem.name}(${elem.chainId})`}
+												</option>
+											)
+										})}
+									</select>
+								</button>
 							</h2>
 							{ethersConnected > 0 && signer.current && (
 								<NFTWallet network={network} signer={signer.current} />
