@@ -24,6 +24,7 @@ function App() {
 				peerId: '12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw',
 			}
 			console.log({ krasnodar: krasnodar[0], localNode })
+
 			await Fluence.start({ connectTo: krasnodar[0] })
 
 			const relayTime = await getRelayTime()
