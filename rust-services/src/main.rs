@@ -11,15 +11,29 @@ pub fn main() {
 }
 
 #[marine]
-pub fn store_private_key(public_key: String, private_key: String, password: String) -> bool {
-    log::info!("put called with {}\n", public_key);
+pub fn init_db(db_name: String) -> bool {
     // Open DB in tmp storage
-    let path = "/tmp/users2.sqlite";
+    let path = format!("/tmp/{}.sqlite", db_name);
     let connection =
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
     connection.execute(
-        "CREATE TABLE IF NOT EXISTS users (public_key TEXT PRIMARY KEY, private_key TEXT, password TEXT)",
+        "CREATE TABLE IF NOT EXISTS users (public_key VARCHAR(255) PRIMARY KEY, private_key VARCHAR(255), password VARCHAR(255))",
     ).expect("Error creating table");
+    true
+}
+
+#[marine]
+pub fn store_private_key(
+    db_name: String,
+    public_key: String,
+    private_key: String,
+    password: String,
+) -> bool {
+    log::info!("put called with {}\n", public_key);
+    // Open DB in tmp storage
+    let path = format!("/tmp/{}.sqlite", db_name);
+    let connection =
+        marine_sqlite_connector::Connection::open(path).expect("Error opening database");
     // get stored keys
     let mut cursor = connection
         .prepare("SELECT * FROM keys WHERE public_key=?")
@@ -53,10 +67,10 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
 }
 
 #[marine]
-pub fn get_private_key(public_key: String, _password: String) -> String {
+pub fn get_private_key(db_name: String, public_key: String, _password: String) -> String {
     log::info!("get called with {}\n", public_key);
     // Open DB in tmp storage
-    let path = "/tmp/users2.sqlite";
+    let path = format!("/tmp/{}.sqlite", db_name);
     // Create connection
     let connection =
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
@@ -80,11 +94,11 @@ pub fn get_private_key(public_key: String, _password: String) -> String {
 }
 
 #[marine]
-pub fn testing_key() -> bool {
+pub fn testing_key(db_name: String) -> bool {
     log::info!("CONNECTION");
 
     // Open DB in tmp storage
-    let path = "/tmp/users2.sqlite";
+    let path = format!("/tmp/{}.sqlite", db_name);
     // Create connection
     let connection = marine_sqlite_connector::open(path).expect("Error opening database");
     // get stored keys
