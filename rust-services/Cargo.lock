@@ -1302,7 +1302,6 @@ dependencies = [
  "marine",
  "marine-rs-sdk",
  "marine-sqlite-connector",
- "openssl",
 ]
 
 [[package]]
