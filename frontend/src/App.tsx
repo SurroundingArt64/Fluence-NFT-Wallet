@@ -107,22 +107,30 @@ function App() {
 				{currentState === 'LOGIN' && <Login setConnected={setConnected} />}
 				{currentState === 'CONNECTED' && (
 					<>
-						<div className=''>
-							<p>Connected to {network.name}</p>
-							<p>Address: {state.address}</p>
-							<p>{state.balance} ETH</p>
-							Switch Network
-							{networks.map((elem) => {
-								return (
-									<>
-										<div
-											style={{ cursor: 'pointer' }}
-											onClick={() => setNetwork(elem)}
-											className=''
-										>{`${elem.name}(${elem.chainId})`}</div>
-									</>
-								)
-							})}
+						<div className='Connected'>
+							<h1>Settings</h1>
+							<div className='network'>
+								<div className='address'>
+									{state.address.length > 0
+										? state.address.substring(0, 6) + '****' + state.address.substring(38, 42)
+										: 'Loading Account...'}
+								</div>
+								<div className='balance'>{state.balance} ETH</div>
+							</div>
+							<h2 className='network'>
+								<div>Switch Network</div>
+								{networks.map((elem) => {
+									return (
+										<>
+											<div
+												style={{ cursor: 'pointer' }}
+												onClick={() => setNetwork(elem)}
+												className=''
+											>{`${elem.name}(${elem.chainId})`}</div>
+										</>
+									)
+								})}
+							</h2>
 							{ethersConnected > 0 && signer.current && (
 								<NFTWallet network={network} signer={signer.current} />
 							)}{' '}
