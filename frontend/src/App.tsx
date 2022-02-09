@@ -9,6 +9,11 @@ function App() {
 	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN' | 'CONNECTED'>()
 	const networks = [
 		{
+			name: 'Ethereum',
+			chainId: 1,
+			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+		},
+		{
 			name: 'Rinkeby',
 			chainId: 4,
 			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
@@ -53,7 +58,7 @@ function App() {
 	return (
 		<div className='App'>
 			<header className='App-header'>
-				<h2>Welcome to OpenOcean!</h2>
+				<span>Welcome to OpenOcean!</span>
 				{currentState !== 'CONNECTED' &&
 					StateData.map((elem) => {
 						return (
@@ -76,6 +81,18 @@ function App() {
 						<div className=''>
 							<p>Connected to {network.name}</p>
 							<p>Address: {state.address}</p>
+							Switch Network
+							{networks.map((elem) => {
+								return (
+									<>
+										<div
+											style={{ cursor: 'pointer' }}
+											onClick={() => setNetwork(elem)}
+											className=''
+										>{`${elem.name}(${elem.chainId})`}</div>
+									</>
+								)
+							})}
 						</div>
 					</>
 				)}
