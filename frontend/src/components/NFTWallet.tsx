@@ -10,6 +10,7 @@ export const NFTWallet: React.FC<{
 		chainId: number
 		rpcURL: string
 		moralisIdx: string
+		explorer: string
 	}
 }> = ({ signer, network }) => {
 	const [NFTs, setNFTs] = useState<
@@ -55,7 +56,7 @@ export const NFTWallet: React.FC<{
 			<h1>NFT Wallet</h1>
 			<p>My NFTs</p>
 			{NFTs.map((elem, idx) => (
-				<NFTComponent idx={idx} elem={elem} />
+				<NFTComponent explorer={network.explorer} idx={idx} elem={elem} />
 			))}
 		</div>
 	)
@@ -63,7 +64,9 @@ export const NFTWallet: React.FC<{
 function NFTComponent({
 	idx,
 	elem,
+	explorer,
 }: {
+	explorer: string
 	idx: number
 	elem: {
 		token_address: string
@@ -98,6 +101,9 @@ function NFTComponent({
 			<img src={tokenURI} alt={elem.name} />
 			<p className='name'>{elem.name}</p>
 			<p className='symbol'>{elem.symbol}</p>
+			<a href={explorer + '/address/' + elem.token_address} target='_blank' rel='noopener noreferrer'>
+				View on Block Explorer
+			</a>
 		</div>
 	)
 }

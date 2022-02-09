@@ -14,36 +14,41 @@ function App() {
 		rpcURL: string
 		moralisIdx: string
 		token: string
+		explorer: string
 	}[] = [
-			{
-				name: 'Ethereum',
-				chainId: 1,
-				rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-				moralisIdx: 'eth',
-				token: 'ETH'
-			},
-			{
-				name: 'Rinkeby',
-				chainId: 4,
-				rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-				moralisIdx: 'rinkeby',
-				token: 'rETH'
-			},
-			{
-				name: 'Polygon',
-				chainId: 137,
-				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
-				moralisIdx: 'polygon',
-				token: 'MATIC'
-			},
-			{
-				name: 'Mumbai',
-				chainId: 80001,
-				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
-				moralisIdx: 'mumbai',
-				token: 'tMATIC'
-			},
-		]
+		{
+			name: 'Ethereum',
+			chainId: 1,
+			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+			moralisIdx: 'eth',
+			token: 'ETH',
+			explorer: 'https://etherscan.io/',
+		},
+		{
+			name: 'Rinkeby',
+			chainId: 4,
+			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+			moralisIdx: 'rinkeby',
+			token: 'rETH',
+			explorer: 'https://rinkeby.etherscan.io/',
+		},
+		{
+			name: 'Polygon',
+			chainId: 137,
+			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
+			moralisIdx: 'polygon',
+			token: 'MATIC',
+			explorer: 'https://polygonscan.com/',
+		},
+		{
+			name: 'Mumbai',
+			chainId: 80001,
+			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
+			moralisIdx: 'mumbai',
+			token: 'tMATIC',
+			explorer: 'https://mumbai.polygonscan.com/',
+		},
+	]
 
 	const [network, setNetwork] = useState(networks[0])
 	const [copy, setCopy] = useState(false)
@@ -120,7 +125,8 @@ function App() {
 						<div className='Connected'>
 							<h1>Settings</h1>
 							<div className='network'>
-								<div className='address'
+								<div
+									className='address'
 									onDoubleClick={() => {
 										navigator.clipboard.writeText(state.address)
 										setCopy(true)
@@ -129,25 +135,27 @@ function App() {
 											setCopy(false)
 										}, 2000)
 									}}
-								>{state.address.length > 0 ? state.address.substring(0, 6) + "****" + state.address.substring(38, 42) : "Loading Account..."} {
-										copy && (<span className='copy'>📝</span>)
-									}</div>
-								<div className='balance'>{state.balance} {state.balance ? network.token : "⚠️"}</div>
+								>
+									{state.address.length > 0
+										? state.address.substring(0, 6) + '****' + state.address.substring(38, 42)
+										: 'Loading Account...'}{' '}
+									{copy && <span className='copy'>📝</span>}
+								</div>
+								<div className='balance'>
+									{state.balance} {state.balance ? network.token : '⚠️'}
+								</div>
 							</div>
 							<h2 className='network'>
-								<div>
-									Choose Network
-								</div>
+								<div>Choose Network</div>
 								<button className='dropdown'>
-									<select onChange={(e) => setNetwork(networks.filter((s) =>
-										s.name === e.target.value
-									)[0])}>
+									<select
+										onChange={(e) =>
+											setNetwork(networks.filter((s) => s.name === e.target.value)[0])
+										}
+									>
 										{networks.map((elem) => {
 											return (
-												<option
-													style={{ cursor: 'pointer' }}
-													value={elem.name}
-												>
+												<option style={{ cursor: 'pointer' }} value={elem.name}>
 													{`${elem.name}(${elem.chainId})`}
 												</option>
 											)
