@@ -12,6 +12,7 @@
 		"@types/node": "^16.11.22",
 		"@types/react": "^17.0.39",
 		"@types/react-dom": "^17.0.11",
+		"ethers": "^5.5.4",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-scripts": "4.0.3",
@@ -20,8 +21,8 @@
 	},
 	"devDependencies": {
 		"@fluencelabs/aqua": "^0.5.2-256",
-		"chokidar-cli": "^2.1.0",
-		"@fluencelabs/aqua-lib": "^0.3.2"
+		"@fluencelabs/aqua-lib": "^0.3.2",
+		"chokidar-cli": "^2.1.0"
 	},
 	"scripts": {
 		"postinstall": "copy-avm-public public",

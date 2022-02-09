@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { krasnodar } from '@fluencelabs/fluence-network-environment'
@@ -13,6 +13,8 @@ import {
 } from './_aqua/main'
 
 function App() {
+	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN'>()
+
 	useEffect(() => {
 		const run = async () => {
 			const localNode = {
@@ -51,16 +53,29 @@ function App() {
 		}
 		run()
 	}, [])
+
+	const StateData: { text: string; value: typeof currentState }[] = [
+		{ text: 'Create an account', value: 'CREATE' },
+		{ text: 'Import an account', value: 'IMPORT' },
+		{ text: 'Login into account', value: 'LOGIN' },
+	]
 	return (
 		<div className='App'>
 			<header className='App-header'>
-				<img src={logo} className='App-logo' alt='logo' />
-				<p>
-					Edit <code>src/App.tsx</code> and save to reload.
-				</p>
-				<a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-					Learn React
-				</a>
+				{StateData.map((elem) => {
+					return (
+						<div className=''>
+							<button
+								onClick={() => {
+									updateCurrentState(elem.value)
+								}}
+							>
+								{elem.text}
+							</button>
+						</div>
+					)
+				})}
+				{currentState}
 			</header>
 		</div>
 	)
