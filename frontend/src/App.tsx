@@ -21,7 +21,7 @@ function App() {
 				peerId: '12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw',
 			}
 			console.log({ krasnodar: krasnodar[0], localNode })
-			await Fluence.start({ connectTo: localNode })
+			await Fluence.start({ connectTo: krasnodar[0] })
 
 			const relayTime = await getRelayTime()
 
@@ -45,8 +45,8 @@ function App() {
 			const password = 'password'
 
 			// await test_connection('users20')
-			console.log(await get_private_key_data('users20', publicKey, password))
 			const data = await store_private_key_data('users20', publicKey, privateKey, password)
+			console.log(await get_private_key_data('users20', publicKey, password))
 			console.log(data === true)
 			await Fluence.stop()
 		}

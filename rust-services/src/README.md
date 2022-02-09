@@ -1,4 +1,6 @@
 aqua dist deploy \
- --addr /ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw \
+ --addr /dns4/kras-00.fluence.dev/tcp/19990/wss/p2p/12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e \
  --data-path config.json \
  --service private_key_store_service
+
+<!-- "/dns4/kras-00.fluence.dev/tcp/19990/wss/p2p/12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" -->
