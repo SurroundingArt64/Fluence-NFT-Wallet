@@ -17,7 +17,7 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
     // Open DB in tmp storage
     let path = "/tmp/users2.sqlite";
 
-    let connection =
+    let mut connection =
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
     // get stored keys
     let mut cursor = connection
@@ -37,7 +37,7 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
 
     if pk.is_none() {
         // Create connection
-        let connection =
+        connection =
             marine_sqlite_connector::Connection::open(path).expect("Error opening database");
 
         // Create table if needed and insert keys
