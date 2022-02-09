@@ -121,6 +121,16 @@ label {
   height: 30px;
 }
 
+.address {
+  user-select: none;
+  text-align: center;
+}
+
+.copy {
+  font-size: small;
+  color: rgb(58, 58, 58);
+}
+
 select {
   font-family: 'helvetica neue', helvetica;
   font-size: 1rem;
