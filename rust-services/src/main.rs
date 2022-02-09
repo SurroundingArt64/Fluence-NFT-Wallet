@@ -16,18 +16,41 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
 
     // Open DB in tmp storage
     let path = "/tmp/users2.sqlite";
-    // Create connection
+
     let connection =
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
+    // get stored keys
+    let mut cursor = connection
+        .prepare("SELECT * FROM keys WHERE public_key=?")
+        .expect("Error getting table")
+        .cursor();
+    // bind public key to cursor
+    cursor
+        .bind(&[Value::String(public_key.clone())])
+        .expect("Error binding");
+    // result init
+    let mut pk: Option<String> = None;
+    // get first row
+    while let Some(row) = cursor.next().expect("Error executing query") {
+        pk = Some(row[1].as_string().expect("error on row[1] parsing").into());
+    }
 
-    // Create table if needed and insert keys
-    connection.execute(
+    if pk.is_none() {
+        // Create connection
+        let connection =
+            marine_sqlite_connector::Connection::open(path).expect("Error opening database");
+
+        // Create table if needed and insert keys
+        connection.execute(
         format!("
         CREATE TABLE IF NOT EXISTS keys (public_key TEXT PRIMARY KEY, private_key TEXT, password TEXT);
         INSERT INTO keys (public_key, private_key, password) VALUES ({}, {}, {});
         ", public_key, private_key, password).as_str(),
     ).expect("Error inserting data");
-    true
+        true
+    } else {
+        false
+    }
 }
 
 #[marine]
