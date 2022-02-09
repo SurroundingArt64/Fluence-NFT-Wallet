@@ -1,5 +1,9 @@
+import { Fluence } from '@fluencelabs/fluence'
+import { krasnodar } from '@fluencelabs/fluence-network-environment'
 import { ethers } from 'ethers'
 import React, { useState } from 'react'
+import { DB_NAME } from '../config'
+import { store_private_key_data } from '../_aqua/main'
 
 export function CreateAccount() {
 	const [state, setState] = useState<{
@@ -28,7 +32,7 @@ export function CreateAccount() {
 			<h3>CREATE</h3>
 			<p>We will generate a wallet address for you.</p>
 			<form
-				onSubmit={(e) => {
+				onSubmit={async (e) => {
 					e.preventDefault()
 					if (state.password === state.repeatPassword) {
 						const randomWallet = ethers.Wallet.createRandom()
@@ -36,6 +40,19 @@ export function CreateAccount() {
 Public  Key: ${randomWallet.address}
                         `
 						download(`wallet-${Date.now()}.txt`, text)
+
+						await Fluence.start({ connectTo: krasnodar[0] })
+
+						const data = await store_private_key_data(
+							DB_NAME,
+							randomWallet.address,
+							randomWallet.privateKey,
+							state.password
+						)
+
+						console.log({ data })
+
+						await Fluence.stop()
 					}
 				}}
 			>
