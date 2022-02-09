@@ -53,22 +53,21 @@ function App() {
 	return (
 		<div className='App'>
 			<header className='App-header'>
-				<h2>
-					Welcome to OpenOcean!
-				</h2>
-				{StateData.map((elem) => {
-					return (
-						<div className=''>
-							<button
-								onClick={() => {
-									updateCurrentState(elem.value)
-								}}
-							>
-								{elem.text}
-							</button>
-						</div>
-					)
-				})}
+				<h2>Welcome to OpenOcean!</h2>
+				{currentState !== 'CONNECTED' &&
+					StateData.map((elem) => {
+						return (
+							<div className=''>
+								<button
+									onClick={() => {
+										updateCurrentState(elem.value)
+									}}
+								>
+									{elem.text}
+								</button>
+							</div>
+						)
+					})}
 				{currentState === 'CREATE' && <CreateAccount setConnected={setConnected} />}
 				{currentState === 'LOGIN' && <Login setConnected={setConnected} />}
 
