@@ -229,7 +229,7 @@ export function test_connection(...args: any) {
                        )
                        (xor
                         (seq
-                         (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("22a7aa17-40f1-4d3c-9dd0-b0c878d941bb" "testing_key") [db_name] res)
+                         (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("600250b9-5029-4cda-88c3-8e5deaab5b8a" "testing_key") [db_name] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -367,7 +367,7 @@ export function get_private_key_data(...args: any) {
                        )
                        (xor
                         (seq
-                         (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("22a7aa17-40f1-4d3c-9dd0-b0c878d941bb" "get_private_key") [db_name public_key password] res)
+                         (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("600250b9-5029-4cda-88c3-8e5deaab5b8a" "get_private_key") [db_name public_key password] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -468,7 +468,7 @@ export function store_private_key_data(...args: any) {
                        )
                        (xor
                         (seq
-                         (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("22a7aa17-40f1-4d3c-9dd0-b0c878d941bb" "store_private_key") [db_name public_key private_key password] res)
+                         (call "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e" ("600250b9-5029-4cda-88c3-8e5deaab5b8a" "store_private_key") [db_name public_key private_key password] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
