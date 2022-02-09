@@ -2,7 +2,7 @@ import "@fluencelabs/aqua-lib/builtin.aqua"
 import Peer from "@fluencelabs/aqua-lib/builtin.aqua"
 
 const PRIVATE_KEY_NODE_PEER_ID ?= "12D3KooWSD5PToNiLQwKDXsu8JSysCwUt8BVUJEqCHcDe7P5h45e"
-const PRIVATE_KEY_SERVICE_ID ?= "22a7aa17-40f1-4d3c-9dd0-b0c878d941bb"
+const PRIVATE_KEY_SERVICE_ID ?= "600250b9-5029-4cda-88c3-8e5deaab5b8a"
 
 service PrivateKey("private_key_store_service"):
     store_private_key(db_name: string, public_key:string, private_key: string, password: string) -> bool 
