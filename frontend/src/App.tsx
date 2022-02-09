@@ -1,5 +1,6 @@
 import { ethers, Wallet, providers } from 'ethers'
 import React, { useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router'
 import './App.css'
 
 import { CreateAccount } from './components/CreateAccount'
