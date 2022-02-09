@@ -127,6 +127,7 @@ function NFTComponent({
 		}
 		return baseURL + elem.token_address + '/' + elem.token_id
 	}
+	const [transfer, setTransfer] = useState(false)
 
 	async function transferTo(address: string) {
 		const tx = await new ethers.Contract(elem.token_address, ERC721ABI)
@@ -170,30 +171,55 @@ function NFTComponent({
 						</a>
 					</p>
 				</div>
-			</div>
-			<form
-				onClick={(e) => {
-					e.preventDefault()
-					if (transferToAddress) transferTo(transferToAddress)
-				}}
-			>
-				<input
-					type='text'
-					value={transferToAddress}
-					onChange={(e) => {
-						setTransferTo(e.target.value)
+				<div className="item">
+					<h5>Transfer to Address</h5>
+					<p onClick={() => {
+						setTransfer(!transfer)
 					}}
-					id=''
-				/>
-				<button type='submit'>Transfer NFT</button>
-			</form>
-			{tx && (
-				<>
-					<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
-						View Transaction
-					</a>
-				</>
-			)}
+						style={{ cursor: 'pointer' }}
+					>
+						↘
+					</p>
+				</div>
+				{tx && (
+					<>
+						<div className="item">
+							<h5>View Transaction</h5>
+							<p>
+								<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
+									↗
+								</a>
+							</p>
+						</div>
+					</>
+				)}
+				{
+					transfer &&
+					(<form
+						onClick={(e) => {
+							e.preventDefault()
+							if (transferToAddress) transferTo(transferToAddress)
+						}}
+					>
+						<input
+							type='text'
+							value={transferToAddress}
+							onChange={(e) => {
+								setTransferTo(e.target.value)
+							}}
+							id=''
+							placeholder='0x0000****0000'
+							style={
+								{
+									minWidth: "225px",
+									margin: "10px 0",
+								}
+							}
+						/>
+						<button type='submit'>Transfer NFT</button>
+					</form>)
+				}
+			</div>
 		</div>
 	)
 }
