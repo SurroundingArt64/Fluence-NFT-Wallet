@@ -136,7 +136,7 @@ function NFTComponent({
 
 	return (
 		<div key={idx} className='nft-card'>
-			<img src={tokenURI} alt={elem.name} />
+			<img src={tokenURI} alt="" />
 			<div className='headers'>
 				<div className='item'>
 					<h5>NFT Name</h5>
