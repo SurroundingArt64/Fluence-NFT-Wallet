@@ -52,7 +52,7 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
         connection
             .execute(
                 format!(
-                    "INSERT INTO {} (public_key, private_key, password) VALUES ({}, {}, {});",
+                    "INSERT INTO {} (public_key, private_key, password) VALUES ('{}', '{}', '{}');",
                     SQLITE_TABLE_NAME, public_key, private_key, password
                 )
                 .as_str(),
