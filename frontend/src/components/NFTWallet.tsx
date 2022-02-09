@@ -47,7 +47,6 @@ export const NFTWallet: React.FC<{
 				} catch (err) {
 					console.error(err)
 				}
-				console.log(signer.address, network.chainId)
 			}
 			run()
 		}
@@ -57,14 +56,14 @@ export const NFTWallet: React.FC<{
 			<h1>NFT Wallet</h1>
 			{selectedNFT && <SelectedNFTComponent {...{ signer, network }} elem={selectedNFT} />}
 			<div className='nft'>
-				{NFTs.length > 0 ? NFTs.map((elem, idx) => (
-					<div key={idx} onClick={() => setSelectedNFT(elem)}>
-						<NFTComponent signer={signer} network={network} idx={idx} elem={elem} />
-					</div>
-				)) : (
-					<h2 style={{
-						height: 'calc(100vh - 60vh)',
-					}}>
+				{NFTs.length > 0 ? (
+					NFTs.map((elem, idx) => <NFTComponent signer={signer} network={network} idx={idx} elem={elem} />)
+				) : (
+					<h2
+						style={{
+							height: 'calc(100vh - 60vh)',
+						}}
+					>
 						No NFTs found, choose another network?
 					</h2>
 				)}
@@ -94,7 +93,6 @@ function NFTComponent({
 	const [tx, setTx] = useState()
 	useEffect(() => {
 		const run = async () => {
-			console.log(elem)
 			if (elem.token_uri) {
 				const resp = await axios.get<{ image: string; attributes: any[] }>(elem.token_uri)
 				if (resp.data.image.startsWith('ipfs://')) {
@@ -170,11 +168,12 @@ function NFTComponent({
 						</a>
 					</p>
 				</div>
-				<div className="item">
+				<div className='item'>
 					<h5>Transfer to Address</h5>
-					<p onClick={() => {
-						setTransfer(!transfer)
-					}}
+					<p
+						onClick={() => {
+							setTransfer(!transfer)
+						}}
 						style={{ cursor: 'pointer' }}
 					>
 						↘
@@ -182,7 +181,7 @@ function NFTComponent({
 				</div>
 				{tx && (
 					<>
-						<div className="item">
+						<div className='item'>
 							<h5>View Transaction</h5>
 							<p>
 								<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
@@ -192,9 +191,8 @@ function NFTComponent({
 						</div>
 					</>
 				)}
-				{
-					transfer &&
-					(<form
+				{transfer && (
+					<form
 						onClick={(e) => {
 							e.preventDefault()
 							if (transferToAddress) transferTo(transferToAddress)
@@ -207,14 +205,20 @@ function NFTComponent({
 							alignItems: 'flex-start',
 						}}
 					>
-						<label style={{
-							fontSize: "1.2rem",
-						}}>Transfer ↗</label>
-						<div style={{
-							padding: 0,
-							width: "235px",
-							margin: "10px 0 0 0",
-						}}>
+						<label
+							style={{
+								fontSize: '1.2rem',
+							}}
+						>
+							Transfer ↗
+						</label>
+						<div
+							style={{
+								padding: 0,
+								width: '235px',
+								margin: '10px 0 0 0',
+							}}
+						>
 							<input
 								type='text'
 								value={transferToAddress}
@@ -224,8 +228,8 @@ function NFTComponent({
 								id=''
 								placeholder='0x0000****0000'
 								style={{
-									minWidth: "100px",
-									width: "175px",
+									minWidth: '100px',
+									width: '175px',
 									display: 'flex',
 									alignItems: 'center',
 									justifyContent: 'center',
@@ -233,8 +237,8 @@ function NFTComponent({
 							/>
 							<button type='submit'>Transfer NFT</button>
 						</div>
-					</form>)
-				}
+					</form>
+				)}
 			</div>
 		</div>
 	)
@@ -306,7 +310,7 @@ function SelectedNFTComponent({
 
 	return (
 		<div className='nft-card-selected'>
-			<img src={tokenURI} alt="" />
+			<img src={tokenURI} alt='' />
 			<div className='container'>
 				<div className='headers'>
 					<div className='item'>
@@ -337,11 +341,12 @@ function SelectedNFTComponent({
 							</a>
 						</p>
 					</div>
-					<div className="item">
+					<div className='item'>
 						<h5>Transfer to Address</h5>
-						<p onClick={() => {
-							setTransfer(!transfer)
-						}}
+						<p
+							onClick={() => {
+								setTransfer(!transfer)
+							}}
 							style={{ cursor: 'pointer' }}
 						>
 							↘
@@ -349,7 +354,7 @@ function SelectedNFTComponent({
 					</div>
 					{tx && (
 						<>
-							<div className="item">
+							<div className='item'>
 								<h5>View Transaction</h5>
 								<p>
 									<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
@@ -359,9 +364,8 @@ function SelectedNFTComponent({
 							</div>
 						</>
 					)}
-					{
-						transfer &&
-						(<form
+					{transfer && (
+						<form
 							onClick={(e) => {
 								e.preventDefault()
 								if (transferToAddress) transferTo(transferToAddress)
@@ -374,14 +378,20 @@ function SelectedNFTComponent({
 								alignItems: 'flex-start',
 							}}
 						>
-							<label style={{
-								fontSize: "1.2rem",
-							}}>Transfer ↗</label>
-							<div style={{
-								padding: 0,
-								width: "235px",
-								margin: "10px 0 0 0",
-							}}>
+							<label
+								style={{
+									fontSize: '1.2rem',
+								}}
+							>
+								Transfer ↗
+							</label>
+							<div
+								style={{
+									padding: 0,
+									width: '235px',
+									margin: '10px 0 0 0',
+								}}
+							>
 								<input
 									type='text'
 									value={transferToAddress}
@@ -391,8 +401,8 @@ function SelectedNFTComponent({
 									id=''
 									placeholder='0x0000****0000'
 									style={{
-										minWidth: "100px",
-										width: "175px",
+										minWidth: '100px',
+										width: '175px',
 										display: 'flex',
 										alignItems: 'center',
 										justifyContent: 'center',
@@ -400,8 +410,8 @@ function SelectedNFTComponent({
 								/>
 								<button type='submit'>Transfer NFT</button>
 							</div>
-						</form>)
-					}
+						</form>
+					)}
 				</div>
 			</div>
 		</div>

@@ -49,7 +49,6 @@ Public  Key: ${randomWallet.address}
 							randomWallet.privateKey,
 							state.password
 						)
-						console.log({ data })
 
 						setConnected(randomWallet.privateKey)
 						await Fluence.stop()
@@ -90,7 +89,7 @@ Public  Key: ${randomWallet.address}
 						required
 					/>
 				</div>
-				<span style={{ height: "25px" }} />
+				<span style={{ height: '25px' }} />
 				<input type='submit' value='Submit' />
 			</form>
 		</div>
