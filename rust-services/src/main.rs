@@ -12,10 +12,28 @@ pub fn main() {
 }
 
 #[marine]
-pub fn store_private_key(private_key: String, password: String) -> bool {
+pub fn store_private_key(public_key: String, private_key: String, password: String) -> bool {
     log::info!("put called with {} {}\n", private_key, password);
-    // get the public key.
-    // use public key as index.
+
+    // Open DB in tmp storage
+    let path = "/tmp/store.db";
+    // Create connection
+    let mut connection = marine_sqlite_connector::Connection::open(path).unwrap();
+
+    // Create table if needed and insert keys
+    connection.execute(
+        format!("
+        CREATE TABLE IF NOT EXISTS keys (public_key TEXT PRIMARY KEY, private_key TEXT, password TEXT);
+        INSERT INTO keys (public_key, private_key, password) VALUES ({}, {}, {});
+        ", public_key, private_key, password).as_str(),
+    ).unwrap();
+
+    // reconnect
+    connection = marine_sqlite_connector::Connection::open(path).unwrap();
+    // get stored keys
+    let cursor = connection.prepare("SELECT * FROM keys").unwrap().cursor();
+    // debug print count of keys
+    log::info!("table size is: {:?}", cursor.count());
     true
 }
 
