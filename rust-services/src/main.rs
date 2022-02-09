@@ -13,15 +13,16 @@ pub fn main() {
 #[marine]
 pub fn store_private_key(public_key: String, private_key: String, password: String) -> bool {
     log::info!("put called with {}\n", public_key);
-
     // Open DB in tmp storage
     let path = "/tmp/users2.sqlite";
-
     let mut connection =
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
     // get stored keys
     let mut cursor = connection
-        .prepare("SELECT * FROM keys WHERE public_key=?")
+        .prepare("
+            CREATE TABLE IF NOT EXISTS keys (public_key TEXT PRIMARY KEY, private_key TEXT, password TEXT);
+            SELECT * FROM keys WHERE public_key=?;
+        ")
         .expect("Error getting table")
         .cursor();
     // bind public key to cursor
@@ -34,19 +35,22 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
     while let Some(row) = cursor.next().expect("Error executing query") {
         pk = Some(row[1].as_string().expect("error on row[1] parsing").into());
     }
-
     if pk.is_none() {
         // Create connection
         connection =
             marine_sqlite_connector::Connection::open(path).expect("Error opening database");
-
         // Create table if needed and insert keys
-        connection.execute(
-        format!("
-        CREATE TABLE IF NOT EXISTS keys (public_key TEXT PRIMARY KEY, private_key TEXT, password TEXT);
+        connection
+            .execute(
+                format!(
+                    "
         INSERT INTO keys (public_key, private_key, password) VALUES ({}, {}, {});
-        ", public_key, private_key, password).as_str(),
-    ).expect("Error inserting data");
+        ",
+                    public_key, private_key, password
+                )
+                .as_str(),
+            )
+            .expect("Error inserting data");
         true
     } else {
         false
@@ -95,6 +99,5 @@ pub fn testing_key() -> bool {
         .cursor();
     // debug print count of keys
     log::info!("table size is: {:?}", cursor.count());
-
     true
 }
