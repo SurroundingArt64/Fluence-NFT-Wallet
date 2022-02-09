@@ -48,3 +48,46 @@ button:active {
   color: #666;
   box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
 }
+
+p {
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+input {
+  /* remove all styles */
+  border: none;
+  padding: 0.7em 1.7em;
+  font-size: 18px;
+  font-weight: 200;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  margin: 10px;
+  color: rgb(58, 58, 58);
+  min-width: 250px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0 10px;
+}

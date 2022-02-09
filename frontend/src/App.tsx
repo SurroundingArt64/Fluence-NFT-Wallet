@@ -54,9 +54,9 @@ function App() {
 	}
 
 	const StateData: { text: string; value: typeof currentState }[] = [
+		{ text: 'Login into account', value: 'LOGIN' },
 		{ text: 'Create an account', value: 'CREATE' },
 		{ text: 'Import an account', value: 'IMPORT' },
-		{ text: 'Login into account', value: 'LOGIN' },
 	]
 
 	return (

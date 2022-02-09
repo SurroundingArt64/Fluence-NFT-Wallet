@@ -17,7 +17,7 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 
 	return (
 		<>
-			<h3>LOGIN</h3>
+			<h2>LOGIN</h2>
 			<p>Enter your address and password</p>
 			<form
 				onSubmit={(e) => {
@@ -25,29 +25,30 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 					handleLogin(addr, password)
 				}}
 			>
-				<div className=''>
+				<div className='Form'>
+					<label htmlFor='addr'>Address</label>
 					<input
 						type='text'
-						placeholder='Enter Address'
+						placeholder='0x0000....0000'
 						onChange={(e) => {
 							setAddr(e.target.value)
 						}}
 						value={addr}
 					/>
 				</div>
-				<div className=''>
+				<div className='Form'>
+					<label htmlFor='password'>Password</label>
 					<input
 						type='password'
-						placeholder='Enter Password'
+						placeholder='********'
 						onChange={(e) => {
 							setPassword(e.target.value)
 						}}
 						value={password}
 					/>
 				</div>
-				<div className=''>
-					<input type='submit' value='Submit' />
-				</div>
+				<span style={{ height: "25px" }} />
+				<input type='submit' value='LOGIN' />
 			</form>
 		</>
 	)
