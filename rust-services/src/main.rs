@@ -7,7 +7,7 @@ use marine_sqlite_connector::Value;
 module_manifest!();
 
 pub fn main() {
-    WasmLoggerBuilder::new().build().unwrap();
+    WasmLoggerBuilder::new().build().expect("Error init logger");
 }
 
 #[marine]
@@ -17,29 +17,8 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
     // Open DB in tmp storage
     let path = "/tmp/users2.sqlite";
     // Create connection
-    let connection = marine_sqlite_connector::Connection::open(path).unwrap();
-
-    // let mut cursor = connection
-    //     .prepare(
-    //         "CREATE TABLE IF NOT EXISTS keys (
-    //         public_key TEXT PRIMARY KEY,
-    //         private_key TEXT,
-    //         password TEXT
-    //     );
-    //     INSERT INTO keys (public_key, private_key, password) VALUES (?, ?, ?);",
-    //     )
-    //     .unwrap()
-    //     .cursor();
-
-    // cursor
-    //     .bind(&[
-    //         Value::String(public_key),
-    //         Value::String(private_key),
-    //         Value::String(password),
-    //     ])
-    //     .unwrap();
-
-    // cursor.next().unwrap();
+    let connection =
+        marine_sqlite_connector::Connection::open(path).expect("Error opening database");
 
     // Create table if needed and insert keys
     connection.execute(
@@ -47,14 +26,7 @@ pub fn store_private_key(public_key: String, private_key: String, password: Stri
         CREATE TABLE IF NOT EXISTS keys (public_key TEXT PRIMARY KEY, private_key TEXT, password TEXT);
         INSERT INTO keys (public_key, private_key, password) VALUES ({}, {}, {});
         ", public_key, private_key, password).as_str(),
-    ).unwrap();
-
-    // // reconnect
-    // connection = marine_sqlite_connector::Connection::open(path).unwrap();
-    // // get stored keys
-    // let cursor = connection.prepare("SELECT * FROM keys").unwrap().cursor();
-    // // debug print count of keys
-    // log::info!("table size is: {:?}", cursor.count());
+    ).expect("Error inserting data");
     true
 }
 
@@ -64,19 +36,22 @@ pub fn get_private_key(public_key: String, _password: String) -> String {
     // Open DB in tmp storage
     let path = "/tmp/users2.sqlite";
     // Create connection
-    let connection = marine_sqlite_connector::Connection::open(path).unwrap();
+    let connection =
+        marine_sqlite_connector::Connection::open(path).expect("Error opening database");
     // get stored keys
     let mut cursor = connection
         .prepare("SELECT * FROM keys WHERE public_key=?")
-        .unwrap()
+        .expect("Error getting table")
         .cursor();
     // bind public key to cursor
-    cursor.bind(&[Value::String(public_key)]).unwrap();
+    cursor
+        .bind(&[Value::String(public_key)])
+        .expect("Error binding");
     // result init
     let mut private_key: String = "Not Found".to_string();
     // get first row
-    while let Some(row) = cursor.next().unwrap() {
-        private_key = row[1].as_string().expect("error on row[0] parsing").into();
+    while let Some(row) = cursor.next().expect("Error executing query") {
+        private_key = row[1].as_string().expect("error on row[1] parsing").into();
     }
     // return
     private_key
@@ -89,9 +64,12 @@ pub fn testing_key() -> bool {
     // Open DB in tmp storage
     let path = "/tmp/users2.sqlite";
     // Create connection
-    let connection = marine_sqlite_connector::open(path).unwrap();
+    let connection = marine_sqlite_connector::open(path).expect("Error opening database");
     // get stored keys
-    let cursor = connection.prepare("SELECT * FROM keys").unwrap().cursor();
+    let cursor = connection
+        .prepare("SELECT * FROM keys")
+        .expect("Error getting table")
+        .cursor();
     // debug print count of keys
     log::info!("table size is: {:?}", cursor.count());
 
