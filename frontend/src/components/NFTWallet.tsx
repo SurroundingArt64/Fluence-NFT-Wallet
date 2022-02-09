@@ -140,7 +140,7 @@ function NFTComponent({
 
 	return (
 		<div key={idx} className='nft-card'>
-			<img src={tokenURI} alt="" />
+			<img src={tokenURI} alt='' />
 			<div className='headers'>
 				<div className='item'>
 					<h5>NFT Name</h5>
@@ -163,7 +163,7 @@ function NFTComponent({
 					</p>
 				</div>
 				<div className='item'>
-					<h5>Visit Opensea</h5>
+					<h5>Sell on Opensea</h5>
 					<p>
 						<a href={getOpenSeaURL()} target='_blank' rel='noopener noreferrer'>
 							↗
