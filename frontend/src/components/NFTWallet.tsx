@@ -56,7 +56,7 @@ export const NFTWallet: React.FC<{
 			<h1>NFT Wallet</h1>
 			<p>My NFTs</p>
 			{NFTs.map((elem, idx) => (
-				<NFTComponent explorer={network.explorer} idx={idx} elem={elem} />
+				<NFTComponent network={network} idx={idx} elem={elem} />
 			))}
 		</div>
 	)
@@ -64,9 +64,15 @@ export const NFTWallet: React.FC<{
 function NFTComponent({
 	idx,
 	elem,
-	explorer,
+	network: { explorer, chainId },
 }: {
-	explorer: string
+	network: {
+		name: string
+		chainId: number
+		rpcURL: string
+		moralisIdx: string
+		explorer: string
+	}
 	idx: number
 	elem: {
 		token_address: string
@@ -96,13 +102,41 @@ function NFTComponent({
 		}
 		run()
 	}, [elem])
+	const getOpenSeaURL = () => {
+		let baseURL
+		switch (chainId) {
+			case 1:
+				baseURL = 'https://opensea.io/assets/'
+				break
+			case 4:
+				baseURL = 'https://testnets.opensea.io/assets/'
+				break
+			case 137:
+				baseURL = 'https://opensea.io/assets/polygon/'
+				break
+			case 80001:
+				baseURL = 'https://testnets.opensea.io/assets/mumbai/'
+				break
+			default:
+				break
+		}
+		return baseURL + elem.token_address + '/' + elem.token_id
+	}
 	return (
 		<div key={idx} className=''>
 			<img src={tokenURI} alt={elem.name} />
 			<p className='name'>{elem.name}</p>
 			<p className='symbol'>{elem.symbol}</p>
-			<a href={explorer + '/address/' + elem.token_address} target='_blank' rel='noopener noreferrer'>
+			<a
+				href={explorer + 'token/' + elem.token_address + `?a=${elem.token_id}#inventory`}
+				target='_blank'
+				rel='noopener noreferrer'
+			>
 				View on Block Explorer
+			</a>
+			<br />
+			<a href={getOpenSeaURL()} target='_blank' rel='noopener noreferrer'>
+				View on Opensea
 			</a>
 		</div>
 	)
