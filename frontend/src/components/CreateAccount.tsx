@@ -10,6 +10,19 @@ export function CreateAccount() {
 		repeatPassword: '',
 	})
 
+	function download(filename: string, text: string) {
+		const element = document.createElement('a')
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+		element.setAttribute('download', filename)
+
+		element.style.display = 'none'
+		document.body.appendChild(element)
+
+		element.click()
+
+		document.body.removeChild(element)
+	}
+
 	return (
 		<div>
 			<h3>CREATE</h3>
@@ -18,7 +31,11 @@ export function CreateAccount() {
 				onSubmit={(e) => {
 					e.preventDefault()
 					if (state.password === state.repeatPassword) {
-						console.log(ethers.utils.randomBytes(32))
+						const randomWallet = ethers.Wallet.createRandom()
+						let text = `Private Key: ${randomWallet.privateKey}
+Public  Key: ${randomWallet.address}
+                        `
+						download(`wallet-${Date.now()}.txt`, text)
 					}
 				}}
 			>
