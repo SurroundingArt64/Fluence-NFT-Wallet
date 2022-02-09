@@ -4,10 +4,52 @@ use marine_rs_sdk::WasmLoggerBuilder;
 
 use marine_sqlite_connector::Value;
 
+#[macro_use]
+extern crate magic_crypt;
+extern crate base64;
+
+use std::io::Cursor;
+
+use magic_crypt::generic_array::typenum::U256;
+use magic_crypt::MagicCryptTrait;
+
 module_manifest!();
 
 pub fn main() {
+    println!(
+        "{} {}",
+        encrypt(
+            "0x31e23ea86193f0eb1d6563b4e39b7494e1fec93f88034504ea6468f5e2d93339".to_string(),
+            "password".to_string()
+        ),
+        decrypt(
+            "q9VPw0AgmM7MxAm4JGSfwcDQ9AkAVZlU4r5xNyxMfOqiEGhthqZtyy5ttDmFx/AGpe+irDsbB7e3DDyfeJZzQQF8vMfk4y2wFdlOcOTZS+o=".to_string(),
+            "password".to_string()
+        )
+    );
+
     WasmLoggerBuilder::new().build().expect("Error init logger");
+}
+
+pub fn encrypt(plaintext: String, seed: String) -> String {
+    let mc = new_magic_crypt!(seed, 256);
+
+    let mut reader = Cursor::new(plaintext);
+    let mut writer = Vec::new();
+
+    mc.encrypt_reader_to_writer2::<U256>(&mut reader, &mut writer)
+        .unwrap();
+
+    let base64 = base64::encode(&writer);
+
+    base64
+}
+
+pub fn decrypt(hashed: String, seed: String) -> String {
+    let mc = new_magic_crypt!(seed, 256);
+
+    mc.decrypt_base64_to_string(hashed)
+        .unwrap_or_else(|_| "".to_string())
 }
 
 #[marine]
