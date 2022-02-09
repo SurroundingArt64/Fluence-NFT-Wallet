@@ -12,26 +12,31 @@ function App() {
 		name: string
 		chainId: number
 		rpcURL: string
+		moralisIdx: string
 	}[] = [
 		{
 			name: 'Ethereum',
 			chainId: 1,
 			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+			moralisIdx: 'eth',
 		},
 		{
 			name: 'Rinkeby',
 			chainId: 4,
 			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+			moralisIdx: 'rinkeby',
 		},
 		{
 			name: 'Polygon',
 			chainId: 137,
 			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
+			moralisIdx: 'polygon',
 		},
 		{
 			name: 'Mumbai',
 			chainId: 80001,
 			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
+			moralisIdx: 'mumbai',
 		},
 	]
 
