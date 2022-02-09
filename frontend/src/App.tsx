@@ -12,6 +12,7 @@ import {
 	tellFortune,
 } from './_aqua/main'
 import { CreateAccount } from './components/CreateAccount'
+import Login from './components/Login'
 
 function App() {
 	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN' | 'CONNECTED'>()
@@ -77,6 +78,7 @@ function App() {
 					)
 				})}
 				{currentState === 'CREATE' && <CreateAccount />}
+				{currentState === 'LOGIN' && <Login />}
 			</header>
 		</div>
 	)
