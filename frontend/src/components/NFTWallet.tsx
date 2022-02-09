@@ -91,6 +91,8 @@ function NFTComponent({
 	}
 }): JSX.Element {
 	const [tokenURI, setTokenURI] = useState('')
+	const [transferToAddress, setTransferTo] = useState('')
+	const [tx, setTx] = useState()
 	useEffect(() => {
 		const run = async () => {
 			console.log(elem)
@@ -131,7 +133,9 @@ function NFTComponent({
 			.connect(signer)
 			.transferFrom(signer.address, address, elem.token_id)
 		console.log({ tx })
-		await tx.wait()
+		setTx(tx.hash)
+		const receipt = await tx.wait()
+		console.log({ receipt })
 	}
 
 	return (
@@ -167,6 +171,29 @@ function NFTComponent({
 					</p>
 				</div>
 			</div>
+			<form
+				onClick={(e) => {
+					e.preventDefault()
+					if (transferToAddress) transferTo(transferToAddress)
+				}}
+			>
+				<input
+					type='text'
+					value={transferToAddress}
+					onChange={(e) => {
+						setTransferTo(e.target.value)
+					}}
+					id=''
+				/>
+				<button type='submit'>Transfer NFT</button>
+			</form>
+			{tx && (
+				<>
+					<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
+						View Transaction
+					</a>
+				</>
+			)}
 		</div>
 	)
 }
