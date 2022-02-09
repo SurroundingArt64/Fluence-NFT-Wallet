@@ -46,7 +46,7 @@ function App() {
 		]
 
 	const [network, setNetwork] = useState(networks[0])
-
+	const [copy, setCopy] = useState(false)
 	const [state, setState] = useState({ address: '', balance: '' })
 	const [ethersConnected, setEthersConnected] = useState(0)
 	let signer = useRef<ethers.Wallet | undefined>()
@@ -120,7 +120,18 @@ function App() {
 						<div className='Connected'>
 							<h1>Settings</h1>
 							<div className='network'>
-								<div className='address'>{state.address.length > 0 ? state.address.substring(0, 6) + "****" + state.address.substring(38, 42) : "Loading Account..."}</div>
+								<div className='address'
+									onDoubleClick={() => {
+										navigator.clipboard.writeText(state.address)
+										setCopy(true)
+										// timeout for 2 seconds
+										setTimeout(() => {
+											setCopy(false)
+										}, 2000)
+									}}
+								>{state.address.length > 0 ? state.address.substring(0, 6) + "****" + state.address.substring(38, 42) : "Loading Account..."} {
+										copy && (<span className='copy'>copied</span>)
+									}</div>
 								<div className='balance'>{state.balance} {state.balance ? network.token : "⚠️"}</div>
 							</div>
 							<h2 className='network'>
