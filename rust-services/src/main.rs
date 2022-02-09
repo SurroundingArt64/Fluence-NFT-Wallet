@@ -16,18 +16,6 @@ use magic_crypt::MagicCryptTrait;
 module_manifest!();
 
 pub fn main() {
-    println!(
-        "{} {}",
-        encrypt(
-            "0x31e23ea86193f0eb1d6563b4e39b7494e1fec93f88034504ea6468f5e2d93339".to_string(),
-            "password".to_string()
-        ),
-        decrypt(
-            "q9VPw0AgmM7MxAm4JGSfwcDQ9AkAVZlU4r5xNyxMfOqiEGhthqZtyy5ttDmFx/AGpe+irDsbB7e3DDyfeJZzQQF8vMfk4y2wFdlOcOTZS+o=".to_string(),
-            "password".to_string()
-        )
-    );
-
     WasmLoggerBuilder::new().build().expect("Error init logger");
 }
 
@@ -59,7 +47,7 @@ pub fn init_db(db_name: String) -> bool {
     let connection =
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
     connection.execute(
-        "CREATE TABLE IF NOT EXISTS keys ('public_key' VARCHAR(255) PRIMARY KEY, 'private_key' VARCHAR(255), 'password' VARCHAR(255));",
+        "CREATE TABLE IF NOT EXISTS keys ('public_key' VARCHAR(255) PRIMARY KEY, 'private_key' VARCHAR(255));",
     ).expect("Error creating table");
     true
 }
@@ -78,7 +66,7 @@ pub fn store_private_key(
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
 
     connection.execute(
-        "CREATE TABLE IF NOT EXISTS keys ('public_key' VARCHAR(255) PRIMARY KEY,private_key 'VARCHAR'(255),password 'VARCHAR'(255));",
+        "CREATE TABLE IF NOT EXISTS keys ('public_key' VARCHAR(255) PRIMARY KEY,private_key 'VARCHAR'(255));",
     ).expect("Error creating table");
     // get stored keys
     let mut cursor = connection
@@ -100,10 +88,9 @@ pub fn store_private_key(
         connection
             .execute(
                 format!(
-                    "INSERT INTO keys (public_key, private_key, password) VALUES ('{}', '{}', '{}');",
+                    "INSERT INTO keys (public_key, private_key) VALUES ('{}', '{}');",
                     public_key,
-                    private_key,
-                    password,
+                    encrypt(private_key, password)
                 )
                 .as_str(),
             )
@@ -115,7 +102,7 @@ pub fn store_private_key(
 }
 
 #[marine]
-pub fn get_private_key(db_name: String, public_key: String, _password: String) -> String {
+pub fn get_private_key(db_name: String, public_key: String, password: String) -> String {
     log::info!("get called with {}\n", public_key);
     // Open DB in tmp storage
     let path = format!("/tmp/{}.sqlite", db_name);
@@ -138,7 +125,7 @@ pub fn get_private_key(db_name: String, public_key: String, _password: String) -
         private_key = row[1].as_string().expect("error on row[1] parsing").into();
     }
     // return
-    private_key
+    decrypt(private_key, password).to_string()
 }
 
 #[marine]
