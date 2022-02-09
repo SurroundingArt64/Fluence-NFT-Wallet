@@ -1,9 +1,10 @@
-import ethers, { Wallet, providers } from 'ethers'
+import { ethers, Wallet, providers } from 'ethers'
 import React, { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 import { CreateAccount } from './components/CreateAccount'
 import Login from './components/Login'
+import { NFTWallet } from './components/NFTWallet'
 
 function App() {
 	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN' | 'CONNECTED'>()
@@ -22,8 +23,8 @@ function App() {
 
 	const [network, setNetwork] = useState(networks[0])
 
-	const [state, setState] = useState({ address: '' })
-
+	const [state, setState] = useState({ address: '', balance: '' })
+	const [ethersConnected, setEthersConnected] = useState(0)
 	let signer = useRef<ethers.Signer | undefined>()
 	const initEthers = async (privKey: string) => {
 		signer.current = new Wallet(privKey)
@@ -31,7 +32,9 @@ function App() {
 		if (signer) {
 			let provider = new providers.JsonRpcProvider(network.rpcURL)
 			signer.current = signer.current.connect(provider)
-			setState((state) => ({ ...state, address }))
+			let balance = await signer.current.getBalance()
+			setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
+			setEthersConnected((s) => s + 1)
 		}
 	}
 
@@ -40,6 +43,7 @@ function App() {
 			let provider = new providers.JsonRpcProvider(network.rpcURL)
 			if (signer.current) {
 				signer.current = signer.current.connect(provider)
+				setEthersConnected((s) => s + 1)
 			}
 		}
 	}, [network, currentState])
@@ -85,6 +89,7 @@ function App() {
 						<div className=''>
 							<p>Connected to {network.name}</p>
 							<p>Address: {state.address}</p>
+							<p>{state.balance} ETH</p>
 							Switch Network
 							{networks.map((elem) => {
 								return (
@@ -97,6 +102,7 @@ function App() {
 									</>
 								)
 							})}
+							{ethersConnected > 0 && signer.current && <NFTWallet signer={signer.current} />}{' '}
 						</div>
 					</>
 				)}
