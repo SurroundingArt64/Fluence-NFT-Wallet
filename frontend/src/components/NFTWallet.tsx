@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
-import { MORALIS_API_KEY } from '../config'
+import { ERC721ABI, MORALIS_API_KEY } from '../config'
 
 export const NFTWallet: React.FC<{
 	signer: ethers.Wallet
@@ -56,17 +56,19 @@ export const NFTWallet: React.FC<{
 			<h1>NFT Wallet</h1>
 			<div className='nft'>
 				{NFTs.map((elem, idx) => (
-					<NFTComponent network={network} idx={idx} elem={elem} />
+					<NFTComponent signer={signer} network={network} idx={idx} elem={elem} />
 				))}
 			</div>
 		</>
 	)
 }
 function NFTComponent({
+	signer,
 	idx,
 	elem,
 	network: { explorer, chainId },
 }: {
+	signer: ethers.Wallet
 	network: {
 		name: string
 		chainId: number
@@ -123,6 +125,15 @@ function NFTComponent({
 		}
 		return baseURL + elem.token_address + '/' + elem.token_id
 	}
+
+	async function transferTo(address: string) {
+		const tx = await new ethers.Contract(elem.token_address, ERC721ABI)
+			.connect(signer)
+			.transferFrom(signer.address, address, elem.token_id)
+		console.log({ tx })
+		await tx.wait()
+	}
+
 	return (
 		<div key={idx} className='nft-card'>
 			<img src={tokenURI} alt={elem.name} />
@@ -138,9 +149,11 @@ function NFTComponent({
 				<div className='item'>
 					<h5>Visit Explorer</h5>
 					<p>
-						<a href={explorer + 'token/' + elem.token_address + `?a=${elem.token_id}#inventory`}
+						<a
+							href={explorer + 'token/' + elem.token_address + `?a=${elem.token_id}#inventory`}
 							target='_blank'
-							rel='noopener noreferrer'>
+							rel='noopener noreferrer'
+						>
 							↗
 						</a>
 					</p>
