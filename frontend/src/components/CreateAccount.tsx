@@ -29,7 +29,7 @@ export function CreateAccount({ setConnected }: { setConnected: (privKey: string
 
 	return (
 		<div>
-			<h3>CREATE</h3>
+			<h2>CREATE</h2>
 			<p>We will generate a wallet address for you.</p>
 			<form
 				onSubmit={async (e) => {
@@ -56,7 +56,8 @@ Public  Key: ${randomWallet.address}
 					}
 				}}
 			>
-				<div className=''>
+				<div className='Form'>
+					<label htmlFor='password'>Password</label>
 					<input
 						onChange={(e) => {
 							setState((state) => {
@@ -71,7 +72,8 @@ Public  Key: ${randomWallet.address}
 						value={state.password}
 					/>
 				</div>
-				<div className=''>
+				<div className='Form'>
+					<label htmlFor='repeatPassword'>Repeat Password</label>
 					<input
 						onChange={(e) => {
 							setState((state) => {
@@ -86,9 +88,8 @@ Public  Key: ${randomWallet.address}
 						value={state.repeatPassword}
 					/>
 				</div>
-				<div className=''>
-					<input type='submit' value='Submit' />
-				</div>
+				<span style={{ height: "25px" }} />
+				<input type='submit' value='Submit' />
 			</form>
 		</div>
 	)
