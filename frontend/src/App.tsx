@@ -8,7 +8,11 @@ import { NFTWallet } from './components/NFTWallet'
 
 function App() {
 	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN' | 'CONNECTED'>()
-	const networks = [
+	const networks: {
+		name: string
+		chainId: number
+		rpcURL: string
+	}[] = [
 		{
 			name: 'Ethereum',
 			chainId: 1,
@@ -35,7 +39,7 @@ function App() {
 
 	const [state, setState] = useState({ address: '', balance: '' })
 	const [ethersConnected, setEthersConnected] = useState(0)
-	let signer = useRef<ethers.Signer | undefined>()
+	let signer = useRef<ethers.Wallet | undefined>()
 	const initEthers = async (privKey: string) => {
 		signer.current = new Wallet(privKey)
 		let address = await signer.current.getAddress()
@@ -119,7 +123,9 @@ function App() {
 									</>
 								)
 							})}
-							{ethersConnected > 0 && signer.current && <NFTWallet signer={signer.current} />}{' '}
+							{ethersConnected > 0 && signer.current && (
+								<NFTWallet network={network} signer={signer.current} />
+							)}{' '}
 						</div>
 					</>
 				)}
@@ -128,13 +134,11 @@ function App() {
 						onClick={() => {
 							updateCurrentState(undefined)
 						}}
-						style={
-							{
-								position: 'absolute',
-								top: '10px',
-								right: '10px',
-							}
-						}
+						style={{
+							position: 'absolute',
+							top: '10px',
+							right: '10px',
+						}}
 					>
 						Back
 					</button>
