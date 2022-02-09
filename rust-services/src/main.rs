@@ -17,8 +17,10 @@ pub fn main() {
 pub fn init_db() -> bool {
     // Open DB in tmp storage
     let path = SQLITE_DB_PATH;
+    // Connect
     let connection =
         marine_sqlite_connector::Connection::open(path).expect("Error opening database");
+    // Create table
     connection.execute(
         format!("CREATE TABLE IF NOT EXISTS {} (public_key VARCHAR(255) PRIMARY KEY, private_key VARCHAR(255), password VARCHAR(255))", SQLITE_TABLE_NAME).as_str(),
     ).expect("Error creating table");
@@ -27,6 +29,7 @@ pub fn init_db() -> bool {
 
 #[marine]
 pub fn store_private_key(public_key: String, private_key: String, password: String) -> bool {
+    // Log
     log::info!("put called with {}\n", public_key);
     // Open DB in tmp storage
     let path = SQLITE_DB_PATH;
@@ -94,7 +97,6 @@ pub fn get_private_key(public_key: String, _password: String) -> String {
 #[marine]
 pub fn testing_key() -> bool {
     log::info!("CONNECTION");
-
     // Open DB in tmp storage
     let path = SQLITE_DB_PATH;
     // Create connection
