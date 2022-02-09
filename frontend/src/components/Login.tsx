@@ -21,6 +21,7 @@ const Login: React.FC = () => {
             onChange={(e) => {
               setAddr(e.target.value)
             }}
+            value={addr}
           />
         </div>
         <div className=''>
@@ -28,6 +29,7 @@ const Login: React.FC = () => {
             onChange={(e) => {
               setPw(e.target.value)
             }}
+            value={pw}
           />
         </div>
         <div className=''>
