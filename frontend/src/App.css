@@ -63,7 +63,7 @@ p {
 input {
   /* remove all styles */
   border: none;
-  padding: 0.7em 1.7em;
+  padding: 0.7em 1em;
   font-size: 18px;
   font-weight: 200;
   border-radius: 0.5em;
@@ -73,7 +73,7 @@ input {
   box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
   margin: 10px;
   color: rgb(58, 58, 58);
-  min-width: 250px;
+  min-width: 275px;
   cursor: pointer;
 }
 
