@@ -1,24 +1,24 @@
 import "@fluencelabs/aqua-lib/builtin.aqua"
 import Peer from "@fluencelabs/aqua-lib/builtin.aqua"
 
-const PRIVATE_KEY_NODE_PEER_ID ?= "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c"
-const PRIVATE_KEY_SERVICE_ID ?= "a927f714-c19b-4f82-828d-ee2d850c1f95"
+const PRIVATE_KEY_NODE_PEER_ID ?= "12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw"
+const PRIVATE_KEY_SERVICE_ID ?= "5959a792-0dbf-4874-ab81-5e18d00f69d4"
 
 service PrivateKey("private_key_store_service"):
-    store_private_key(public_key:string, private_key: string, password: string) -> bool 
-    get_private_key(private_key: string, password: string) -> string
-    testing_key() -> bool
+    store_private_key(db_name: string, public_key:string, private_key: string, password: string) -> bool 
+    get_private_key(db_name: string,private_key: string, password: string) -> string
+    testing_key(db_name: string) -> bool
 
-func store_private_key_data(public_key:string, private_key: string, password :string) -> bool:
+func store_private_key_data(db_name:string,public_key:string,private_key:string,password:string) -> bool:
     on PRIVATE_KEY_NODE_PEER_ID:
         PrivateKey PRIVATE_KEY_SERVICE_ID
-        res <- PrivateKey.store_private_key(public_key, private_key, password)
+        res <- PrivateKey.store_private_key(db_name, public_key, private_key, password)
     <- res
 
-func get_private_key_data(public_key:string, password :string) -> string:
+func get_private_key_data(db_name: string,public_key:string,password :string) -> string:
     on PRIVATE_KEY_NODE_PEER_ID:
         PrivateKey PRIVATE_KEY_SERVICE_ID
-        res <- PrivateKey.get_private_key(public_key, password)
+        res <- PrivateKey.get_private_key(db_name,public_key,password)
     <- res
 
 func getRelayTime() -> u64:
@@ -26,10 +26,10 @@ func getRelayTime() -> u64:
         ts <- Peer.timestamp_ms()
     <- ts
 
-func test_connection() -> bool:
+func test_connection(db_name:string) -> bool:
     on PRIVATE_KEY_NODE_PEER_ID:
         PrivateKey PRIVATE_KEY_SERVICE_ID
-        res <- PrivateKey.testing_key()
+        res <- PrivateKey.testing_key(db_name)
     <- res
 
 service HelloWorld("hello-world"):

@@ -17,8 +17,8 @@ function App() {
 	useEffect(() => {
 		const run = async () => {
 			const localNode = {
-				multiaddr: '/ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c',
-				peerId: '12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c',
+				multiaddr: '/ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw',
+				peerId: '12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw',
 			}
 			console.log({ krasnodar: krasnodar[0], localNode })
 			await Fluence.start({ connectTo: localNode })
@@ -40,10 +40,13 @@ function App() {
 			})
 			await sayHello()
 			await tellFortune()
-			// console.log(await test_connection(), 'Connected')
-			// console.log(await test_connection(), 'Already connected')
-			console.log(await get_private_key_data('12', '3'))
-			const data = await store_private_key_data('12', '2', '3')
+			const publicKey = '0xC399B74B33730189E2C931716BF5A1fB3e0e0e28'
+			const privateKey = '0x31e23ea86193f0eb1d6563b4e39b7494e1fec93f88034504ea6468f5e2d93339'
+			const password = 'password'
+
+			// await test_connection('users20')
+			console.log(await get_private_key_data('users20', publicKey, password))
+			const data = await store_private_key_data('users20', publicKey, privateKey, password)
 			console.log(data === true)
 			await Fluence.stop()
 		}
