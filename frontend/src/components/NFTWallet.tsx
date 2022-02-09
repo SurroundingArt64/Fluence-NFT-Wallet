@@ -81,6 +81,7 @@ function NFTComponent({
 	const [tokenURI, setTokenURI] = useState('')
 	useEffect(() => {
 		const run = async () => {
+			console.log(elem)
 			if (elem.token_uri) {
 				const resp = await axios.get<{ image: string; attributes: any[] }>(elem.token_uri)
 				if (resp.data.image.startsWith('ipfs://')) {
