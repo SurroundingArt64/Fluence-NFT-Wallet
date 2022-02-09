@@ -17,39 +17,39 @@ function App() {
 		token: string
 		explorer: string
 	}[] = [
-		{
-			name: 'Ethereum',
-			chainId: 1,
-			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-			moralisIdx: 'eth',
-			token: 'ETH',
-			explorer: 'https://etherscan.io/',
-		},
-		{
-			name: 'Rinkeby',
-			chainId: 4,
-			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-			moralisIdx: 'rinkeby',
-			token: 'rETH',
-			explorer: 'https://rinkeby.etherscan.io/',
-		},
-		{
-			name: 'Polygon',
-			chainId: 137,
-			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
-			moralisIdx: 'polygon',
-			token: 'MATIC',
-			explorer: 'https://polygonscan.com/',
-		},
-		{
-			name: 'Mumbai',
-			chainId: 80001,
-			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
-			moralisIdx: 'mumbai',
-			token: 'tMATIC',
-			explorer: 'https://mumbai.polygonscan.com/',
-		},
-	]
+			{
+				name: 'Ethereum',
+				chainId: 1,
+				rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+				moralisIdx: 'eth',
+				token: 'ETH',
+				explorer: 'https://etherscan.io/',
+			},
+			{
+				name: 'Rinkeby',
+				chainId: 4,
+				rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+				moralisIdx: 'rinkeby',
+				token: 'rETH',
+				explorer: 'https://rinkeby.etherscan.io/',
+			},
+			{
+				name: 'Polygon',
+				chainId: 137,
+				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
+				moralisIdx: 'polygon',
+				token: 'MATIC',
+				explorer: 'https://polygonscan.com/',
+			},
+			{
+				name: 'Mumbai',
+				chainId: 80001,
+				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
+				moralisIdx: 'mumbai',
+				token: 'tMATIC',
+				explorer: 'https://mumbai.polygonscan.com/',
+			},
+		]
 
 	const [network, setNetwork] = useState(networks[0])
 	const [copy, setCopy] = useState(false)
@@ -99,6 +99,7 @@ function App() {
 	return (
 		<div className='App'>
 			<header className='App-header'>
+				{currentState && <div style={{ height: "25px" }} />}
 				{!currentState && (
 					<>
 						<h2>
@@ -183,6 +184,19 @@ function App() {
 					>
 						Back
 					</button>
+				)}
+				{currentState && (
+					<h2
+						style={{
+							position: 'absolute',
+							top: '-5px',
+							left: '25px',
+							textTransform: "uppercase",
+							fontSize: "2rem",
+						}}
+					>
+						OpenOcean
+					</h2>
 				)}
 			</header>
 		</div>
