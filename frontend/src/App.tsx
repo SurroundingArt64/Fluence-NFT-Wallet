@@ -10,7 +10,6 @@ import {
 	sayHello,
 	store_private_key_data,
 	tellFortune,
-	test_connection,
 } from './_aqua/main'
 
 function App() {
