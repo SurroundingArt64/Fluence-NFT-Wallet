@@ -54,7 +54,7 @@ function App() {
 		<div className='App'>
 			<header className='App-header'>
 				<h2>
-					Welcome to OpenOcean!
+					Welcome to <span>OpenOcean!</span>
 				</h2>
 				{StateData.map((elem) => {
 					return (
