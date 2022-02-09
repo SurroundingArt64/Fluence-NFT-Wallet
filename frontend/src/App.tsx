@@ -11,9 +11,10 @@ import {
 	store_private_key_data,
 	tellFortune,
 } from './_aqua/main'
+import { CreateAccount } from './components/CreateAccount'
 
 function App() {
-	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN'>()
+	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN' | 'CONNECTED'>()
 
 	useEffect(() => {
 		const run = async () => {
@@ -75,7 +76,7 @@ function App() {
 						</div>
 					)
 				})}
-				{currentState}
+				{currentState === 'CREATE' && <CreateAccount />}
 			</header>
 		</div>
 	)
