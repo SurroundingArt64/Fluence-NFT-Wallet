@@ -1,10 +1,9 @@
 import ethers, { Wallet, providers } from 'ethers'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 import { CreateAccount } from './components/CreateAccount'
 import Login from './components/Login'
-import { BLOCK_API_KEY } from './config'
 
 function App() {
 	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN' | 'CONNECTED'>()
@@ -12,19 +11,33 @@ function App() {
 		{
 			name: 'Rinkeby',
 			chainId: 4,
-			rpcURL: `https://eth.getblock.io/rinkeby/?api_key=${BLOCK_API_KEY}`,
+			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
 		},
 	]
 
-	let signer: ethers.Signer | undefined
+	const [network, setNetwork] = useState(networks[0])
+
+	const [state, setState] = useState({ address: '' })
+
+	let signer = useRef<ethers.Signer | undefined>()
 	const initEthers = async (privKey: string) => {
-		signer = new Wallet(privKey)
+		signer.current = new Wallet(privKey)
+		let address = await signer.current.getAddress()
 		if (signer) {
-			let provider = new providers.JsonRpcProvider(networks[0].rpcURL)
-			signer.connect(provider)
-			console.log(await signer.getBalance())
+			let provider = new providers.JsonRpcProvider(network.rpcURL)
+			signer.current = signer.current.connect(provider)
+			setState((state) => ({ ...state, address }))
 		}
 	}
+
+	useEffect(() => {
+		if (network && currentState === 'CONNECTED' && signer) {
+			let provider = new providers.JsonRpcProvider(network.rpcURL)
+			if (signer.current) {
+				signer.current = signer.current.connect(provider)
+			}
+		}
+	}, [network, currentState])
 
 	const setConnected = (privKey: string) => {
 		updateCurrentState('CONNECTED')
@@ -57,7 +70,16 @@ function App() {
 					)
 				})}
 				{currentState === 'CREATE' && <CreateAccount setConnected={setConnected} />}
-				{currentState === 'LOGIN' && <Login />}
+				{currentState === 'LOGIN' && <Login setConnected={setConnected} />}
+
+				{currentState === 'CONNECTED' && (
+					<>
+						<div className=''>
+							<p>Connected to {network.name}</p>
+							<p>Address: {state.address}</p>
+						</div>
+					</>
+				)}
 			</header>
 		</div>
 	)

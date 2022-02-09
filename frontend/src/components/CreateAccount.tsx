@@ -49,6 +49,7 @@ Public  Key: ${randomWallet.address}
 							randomWallet.privateKey,
 							state.password
 						)
+						console.log({ data })
 
 						setConnected(randomWallet.privateKey)
 						await Fluence.stop()
