@@ -17,9 +17,9 @@ import {
 // Services
 
 export interface PrivateKeyDef {
-    get_private_key: (private_key: string, password: string, callParams: CallParams<'private_key' | 'password'>) => string | Promise<string>;
-    store_private_key: (public_key: string, private_key: string, password: string, callParams: CallParams<'public_key' | 'private_key' | 'password'>) => boolean | Promise<boolean>;
-    testing_key: (callParams: CallParams<null>) => boolean | Promise<boolean>;
+    get_private_key: (db_name: string, private_key: string, password: string, callParams: CallParams<'db_name' | 'private_key' | 'password'>) => string | Promise<string>;
+    store_private_key: (db_name: string, public_key: string, private_key: string, password: string, callParams: CallParams<'db_name' | 'public_key' | 'private_key' | 'password'>) => boolean | Promise<boolean>;
+    testing_key: (db_name: string, callParams: CallParams<'db_name'>) => boolean | Promise<boolean>;
 }
 export function registerPrivateKey(service: PrivateKeyDef): void;
 export function registerPrivateKey(serviceId: string, service: PrivateKeyDef): void;
@@ -36,6 +36,12 @@ export function registerPrivateKey(...args: any) {
         {
             "functionName" : "get_private_key",
             "argDefs" : [
+                {
+                    "name" : "db_name",
+                    "argType" : {
+                        "tag" : "primitive"
+                    }
+                },
                 {
                     "name" : "private_key",
                     "argType" : {
@@ -56,6 +62,12 @@ export function registerPrivateKey(...args: any) {
         {
             "functionName" : "store_private_key",
             "argDefs" : [
+                {
+                    "name" : "db_name",
+                    "argType" : {
+                        "tag" : "primitive"
+                    }
+                },
                 {
                     "name" : "public_key",
                     "argType" : {
@@ -82,6 +94,12 @@ export function registerPrivateKey(...args: any) {
         {
             "functionName" : "testing_key",
             "argDefs" : [
+                {
+                    "name" : "db_name",
+                    "argType" : {
+                        "tag" : "primitive"
+                    }
+                }
             ],
             "returnType" : {
                 "tag" : "primitive"
@@ -186,11 +204,13 @@ export function sayHello(...args: any) {
  
 
 export function test_connection(
+    db_name: string,
     config?: {ttl?: number}
 ): Promise<boolean>;
 
 export function test_connection(
     peer: FluencePeer,
+    db_name: string,
     config?: {ttl?: number}
 ): Promise<boolean>;
 
@@ -201,12 +221,15 @@ export function test_connection(...args: any) {
                      (seq
                       (seq
                        (seq
-                        (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                        (seq
+                         (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                         (call %init_peer_id% ("getDataSrv" "db_name") [] db_name)
+                        )
                         (call -relay- ("op" "noop") [])
                        )
                        (xor
                         (seq
-                         (call "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c" ("a927f714-c19b-4f82-828d-ee2d850c1f95" "testing_key") [] res)
+                         (call "12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw" ("5959a792-0dbf-4874-ab81-5e18d00f69d4" "testing_key") [db_name] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -231,6 +254,12 @@ export function test_connection(...args: any) {
         "tag" : "primitive"
     },
     "argDefs" : [
+        {
+            "name" : "db_name",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        }
     ],
     "names" : {
         "relay" : "-relay-",
@@ -303,6 +332,7 @@ export function getRelayTime(...args: any) {
  
 
 export function get_private_key_data(
+    db_name: string,
     public_key: string,
     password: string,
     config?: {ttl?: number}
@@ -310,6 +340,7 @@ export function get_private_key_data(
 
 export function get_private_key_data(
     peer: FluencePeer,
+    db_name: string,
     public_key: string,
     password: string,
     config?: {ttl?: number}
@@ -324,7 +355,10 @@ export function get_private_key_data(...args: any) {
                        (seq
                         (seq
                          (seq
-                          (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                          (seq
+                           (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                           (call %init_peer_id% ("getDataSrv" "db_name") [] db_name)
+                          )
                           (call %init_peer_id% ("getDataSrv" "public_key") [] public_key)
                          )
                          (call %init_peer_id% ("getDataSrv" "password") [] password)
@@ -333,7 +367,7 @@ export function get_private_key_data(...args: any) {
                        )
                        (xor
                         (seq
-                         (call "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c" ("a927f714-c19b-4f82-828d-ee2d850c1f95" "get_private_key") [public_key password] res)
+                         (call "12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw" ("5959a792-0dbf-4874-ab81-5e18d00f69d4" "get_private_key") [db_name public_key password] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -358,6 +392,12 @@ export function get_private_key_data(...args: any) {
         "tag" : "primitive"
     },
     "argDefs" : [
+        {
+            "name" : "db_name",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        },
         {
             "name" : "public_key",
             "argType" : {
@@ -388,6 +428,7 @@ export function get_private_key_data(...args: any) {
  
 
 export function store_private_key_data(
+    db_name: string,
     public_key: string,
     private_key: string,
     password: string,
@@ -396,6 +437,7 @@ export function store_private_key_data(
 
 export function store_private_key_data(
     peer: FluencePeer,
+    db_name: string,
     public_key: string,
     private_key: string,
     password: string,
@@ -412,7 +454,10 @@ export function store_private_key_data(...args: any) {
                         (seq
                          (seq
                           (seq
-                           (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                           (seq
+                            (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                            (call %init_peer_id% ("getDataSrv" "db_name") [] db_name)
+                           )
                            (call %init_peer_id% ("getDataSrv" "public_key") [] public_key)
                           )
                           (call %init_peer_id% ("getDataSrv" "private_key") [] private_key)
@@ -423,7 +468,7 @@ export function store_private_key_data(...args: any) {
                        )
                        (xor
                         (seq
-                         (call "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c" ("a927f714-c19b-4f82-828d-ee2d850c1f95" "store_private_key") [public_key private_key password] res)
+                         (call "12D3KooWSGWcLm3WkLpMM3ERvEBZyg6X12AobDThK5JCaxE8ARPw" ("5959a792-0dbf-4874-ab81-5e18d00f69d4" "store_private_key") [db_name public_key private_key password] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -448,6 +493,12 @@ export function store_private_key_data(...args: any) {
         "tag" : "primitive"
     },
     "argDefs" : [
+        {
+            "name" : "db_name",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        },
         {
             "name" : "public_key",
             "argType" : {

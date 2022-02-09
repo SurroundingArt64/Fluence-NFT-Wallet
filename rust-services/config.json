@@ -7,14 +7,16 @@
 				"path": "./artifacts/sqlite3.wasm",
 				"preopened_files": ["/tmp"],
 				"mapped_dirs": [["tmp", "/tmp"]],
-				"logger_enabled": [true]
+				"logger_enabled": [true],
+				"mem_pages_count": 100
 			},
 			{
 				"name": "private_key_store",
 				"path": "./artifacts/private_key_store.wasm",
 				"preopened_files": ["/tmp"],
 				"mapped_dirs": [["tmp", "/tmp"]],
-				"logger_enabled": [true]
+				"logger_enabled": [true],
+				"mem_pages_count": 100
 			}
 		]
 	}
