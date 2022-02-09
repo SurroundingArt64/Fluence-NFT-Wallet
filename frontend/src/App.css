@@ -18,6 +18,12 @@
   color: rgb(0, 0, 0);
 }
 
+h1 {
+  font-size: 3rem;
+  font-weight: 200;
+  margin: 40px 0;
+}
+
 h2 {
   font-size: 2.5rem;
   font-weight: 300;
@@ -90,4 +96,25 @@ label {
   font-size: 14px;
   font-weight: 300;
   margin: 0 10px;
+}
+
+.Connected {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 20px;
+}
+
+.network {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 20px;
+  font-size: large;
+  font-weight: 500;
+  border: #000000 solid 1px;
+  width: 100%;
+  min-width: 450px;
+  border-radius: 10px;
 }
