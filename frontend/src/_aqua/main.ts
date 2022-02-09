@@ -18,7 +18,7 @@ import {
 
 export interface PrivateKeyDef {
     get_private_key: (private_key: string, password: string, callParams: CallParams<'private_key' | 'password'>) => string | Promise<string>;
-    store_private_key: (private_key: string, password: string, callParams: CallParams<'private_key' | 'password'>) => boolean | Promise<boolean>;
+    store_private_key: (public_key: string, private_key: string, password: string, callParams: CallParams<'public_key' | 'private_key' | 'password'>) => boolean | Promise<boolean>;
     testing_key: (callParams: CallParams<null>) => boolean | Promise<boolean>;
 }
 export function registerPrivateKey(service: PrivateKeyDef): void;
@@ -56,6 +56,12 @@ export function registerPrivateKey(...args: any) {
         {
             "functionName" : "store_private_key",
             "argDefs" : [
+                {
+                    "name" : "public_key",
+                    "argType" : {
+                        "tag" : "primitive"
+                    }
+                },
                 {
                     "name" : "private_key",
                     "argType" : {
@@ -200,7 +206,7 @@ export function test_connection(...args: any) {
                        )
                        (xor
                         (seq
-                         (call "12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i" ("1d788709-1870-4f9f-b76a-498f4242a62d" "testing_key") [] res)
+                         (call "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c" ("a927f714-c19b-4f82-828d-ee2d850c1f95" "testing_key") [] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -296,7 +302,93 @@ export function getRelayTime(...args: any) {
 
  
 
+export function get_private_key_data(
+    public_key: string,
+    password: string,
+    config?: {ttl?: number}
+): Promise<string>;
+
+export function get_private_key_data(
+    peer: FluencePeer,
+    public_key: string,
+    password: string,
+    config?: {ttl?: number}
+): Promise<string>;
+
+export function get_private_key_data(...args: any) {
+
+    let script = `
+                    (xor
+                     (seq
+                      (seq
+                       (seq
+                        (seq
+                         (seq
+                          (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                          (call %init_peer_id% ("getDataSrv" "public_key") [] public_key)
+                         )
+                         (call %init_peer_id% ("getDataSrv" "password") [] password)
+                        )
+                        (call -relay- ("op" "noop") [])
+                       )
+                       (xor
+                        (seq
+                         (call "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c" ("a927f714-c19b-4f82-828d-ee2d850c1f95" "get_private_key") [public_key password] res)
+                         (call -relay- ("op" "noop") [])
+                        )
+                        (seq
+                         (call -relay- ("op" "noop") [])
+                         (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
+                        )
+                       )
+                      )
+                      (xor
+                       (call %init_peer_id% ("callbackSrv" "response") [res])
+                       (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
+                      )
+                     )
+                     (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 3])
+                    )
+    `
+    return callFunction(
+        args,
+        {
+    "functionName" : "get_private_key_data",
+    "returnType" : {
+        "tag" : "primitive"
+    },
+    "argDefs" : [
+        {
+            "name" : "public_key",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        },
+        {
+            "name" : "password",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        }
+    ],
+    "names" : {
+        "relay" : "-relay-",
+        "getDataSrv" : "getDataSrv",
+        "callbackSrv" : "callbackSrv",
+        "responseSrv" : "callbackSrv",
+        "responseFnName" : "response",
+        "errorHandlingSrv" : "errorHandlingSrv",
+        "errorFnName" : "error"
+    }
+},
+        script
+    )
+}
+
+ 
+
 export function store_private_key_data(
+    public_key: string,
     private_key: string,
     password: string,
     config?: {ttl?: number}
@@ -304,6 +396,7 @@ export function store_private_key_data(
 
 export function store_private_key_data(
     peer: FluencePeer,
+    public_key: string,
     private_key: string,
     password: string,
     config?: {ttl?: number}
@@ -318,7 +411,10 @@ export function store_private_key_data(...args: any) {
                        (seq
                         (seq
                          (seq
-                          (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                          (seq
+                           (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
+                           (call %init_peer_id% ("getDataSrv" "public_key") [] public_key)
+                          )
                           (call %init_peer_id% ("getDataSrv" "private_key") [] private_key)
                          )
                          (call %init_peer_id% ("getDataSrv" "password") [] password)
@@ -327,7 +423,7 @@ export function store_private_key_data(...args: any) {
                        )
                        (xor
                         (seq
-                         (call "12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i" ("1d788709-1870-4f9f-b76a-498f4242a62d" "store_private_key") [private_key password] res)
+                         (call "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c" ("a927f714-c19b-4f82-828d-ee2d850c1f95" "store_private_key") [public_key private_key password] res)
                          (call -relay- ("op" "noop") [])
                         )
                         (seq
@@ -352,6 +448,12 @@ export function store_private_key_data(...args: any) {
         "tag" : "primitive"
     },
     "argDefs" : [
+        {
+            "name" : "public_key",
+            "argType" : {
+                "tag" : "primitive"
+            }
+        },
         {
             "name" : "private_key",
             "argType" : {
