@@ -5,6 +5,7 @@ import { krasnodar } from '@fluencelabs/fluence-network-environment'
 import { Fluence } from '@fluencelabs/fluence'
 import {
 	getRelayTime,
+	get_private_key_data,
 	registerHelloWorld,
 	sayHello,
 	store_private_key_data,
@@ -16,8 +17,8 @@ function App() {
 	useEffect(() => {
 		const run = async () => {
 			const localNode = {
-				multiaddr: '/ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i',
-				peerId: '12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i',
+				multiaddr: '/ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c',
+				peerId: '12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c',
 			}
 			console.log({ krasnodar: krasnodar[0], localNode })
 			await Fluence.start({ connectTo: localNode })
@@ -39,10 +40,11 @@ function App() {
 			})
 			await sayHello()
 			await tellFortune()
-			const data = await store_private_key_data('a', 'b')
+			// console.log(await test_connection(), 'Connected')
+			// console.log(await test_connection(), 'Already connected')
+			console.log(await get_private_key_data('12', '3'))
+			const data = await store_private_key_data('12', '2', '3')
 			console.log(data === true)
-			console.log(await test_connection(), 'Connected')
-			console.log(await test_connection(), 'Already connected')
 			await Fluence.stop()
 		}
 		run()

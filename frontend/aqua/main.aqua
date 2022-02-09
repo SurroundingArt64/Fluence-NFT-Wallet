@@ -1,18 +1,24 @@
 import "@fluencelabs/aqua-lib/builtin.aqua"
 import Peer from "@fluencelabs/aqua-lib/builtin.aqua"
 
-const PRIVATE_KEY_NODE_PEER_ID ?= "12D3KooWDd6Mqv5xqNRzvyg8jEbX4qDx2zRysBGLrZJhy81kgK4i"
-const PRIVATE_KEY_SERVICE_ID ?= "1d788709-1870-4f9f-b76a-498f4242a62d"
+const PRIVATE_KEY_NODE_PEER_ID ?= "12D3KooWLh9CrUcpjrtG3cANn1Uuo4y55q2oL4hYPqj2jDGxNn1c"
+const PRIVATE_KEY_SERVICE_ID ?= "a927f714-c19b-4f82-828d-ee2d850c1f95"
 
 service PrivateKey("private_key_store_service"):
-    store_private_key(private_key: string, password: string) -> bool 
+    store_private_key(public_key:string, private_key: string, password: string) -> bool 
     get_private_key(private_key: string, password: string) -> string
     testing_key() -> bool
 
-func store_private_key_data(private_key: string, password :string) -> bool:
+func store_private_key_data(public_key:string, private_key: string, password :string) -> bool:
     on PRIVATE_KEY_NODE_PEER_ID:
         PrivateKey PRIVATE_KEY_SERVICE_ID
-        res <- PrivateKey.store_private_key(private_key, password)
+        res <- PrivateKey.store_private_key(public_key, private_key, password)
+    <- res
+
+func get_private_key_data(public_key:string, password :string) -> string:
+    on PRIVATE_KEY_NODE_PEER_ID:
+        PrivateKey PRIVATE_KEY_SERVICE_ID
+        res <- PrivateKey.get_private_key(public_key, password)
     <- res
 
 func getRelayTime() -> u64:
