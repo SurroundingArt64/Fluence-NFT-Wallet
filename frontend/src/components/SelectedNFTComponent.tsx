@@ -261,7 +261,7 @@ export function SelectedNFTComponent({
 													onClick={() => {
 														cancelOrder(elem)
 													}}
-													style={{ position: "absolute", right: "-80px", top: "-60px", borderRadius: "100px", padding: "0", width: "100px", height: "30px" }}
+													style={{ transform: "translateX(450px)" }}
 												>
 													CANCEL
 												</button>
