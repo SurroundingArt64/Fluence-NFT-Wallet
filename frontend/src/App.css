@@ -311,7 +311,7 @@ a {
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  max-width: clamp(300px, 50vw, 600px);
+  max-width: 650px;
   margin: 0 0 0 25px;
   padding: 0;
   gap: 25px;
