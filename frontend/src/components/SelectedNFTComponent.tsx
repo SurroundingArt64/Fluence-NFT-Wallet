@@ -25,6 +25,11 @@ export function SelectedNFTComponent({
 	const [tokenURI, setTokenURI] = useState('')
 	const [transferToAddress, setTransferTo] = useState('')
 	const [tx, setTx] = useState()
+
+	const [openSeaData, setOpenSeaData] = useState<{
+		collection: { name?: string; stats: { floor_price: number } }
+		sellOrders: { basePrice: ethers.BigNumberish; currentPrice: ethers.BigNumberish }[]
+	}>()
 	useEffect(() => {
 		const run = async () => {
 			console.log(elem)
