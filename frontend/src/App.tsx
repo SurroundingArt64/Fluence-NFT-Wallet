@@ -68,7 +68,7 @@ function App() {
 			setEthersConnected((s) => s + 1)
 			const seaport = new OpenSeaPort(provider, {
 				networkName: Network.Main,
-				apiKey: ''
+				apiKey: '',
 			})
 			setPort(seaport)
 			console.log(seaport)
