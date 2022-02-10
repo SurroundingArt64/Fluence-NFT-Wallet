@@ -172,7 +172,7 @@ export function SelectedNFTComponent({
 		const anchor = document.createElement('a')
 		anchor.target = '_blank'
 		anchor.href = getOpenSeaURL()
-		document.appendChild(anchor)
+		document.body.appendChild(anchor)
 		anchor.click()
 	}
 
@@ -240,20 +240,42 @@ export function SelectedNFTComponent({
 								{openSeaData.orders.map((elem) => {
 									if (elem.basePrice && elem.currentPrice)
 										return (
-											<div style={{ width: "97%", margin: "0 0 0 10px", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", position: 'relative' }}>
-												<div className='item' style={{ height: "40px" }}>
+											<div
+												style={{
+													width: '97%',
+													margin: '0 0 0 10px',
+													display: 'flex',
+													flexDirection: 'column',
+													alignItems: 'flex-start',
+													justifyContent: 'center',
+													position: 'relative',
+												}}
+											>
+												<div className='item' style={{ height: '40px' }}>
 													<p>Base Price:</p>
 													<p>
-														<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
-															{ethers.utils.formatEther(elem.basePrice.toString()).toString()}
+														<a
+															href={explorer + 'tx/' + tx}
+															target='_blank'
+															rel='noopener noreferrer'
+														>
+															{ethers.utils
+																.formatEther(elem.basePrice.toString())
+																.toString()}
 														</a>
 													</p>
 												</div>
-												<div className='item' style={{ height: "40px" }}>
+												<div className='item' style={{ height: '40px' }}>
 													<p>Current Price:</p>
 													<p>
-														<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
-															{ethers.utils.formatEther(elem.currentPrice.toString()).toString()}
+														<a
+															href={explorer + 'tx/' + tx}
+															target='_blank'
+															rel='noopener noreferrer'
+														>
+															{ethers.utils
+																.formatEther(elem.currentPrice.toString())
+																.toString()}
 														</a>
 													</p>
 												</div>
@@ -263,7 +285,7 @@ export function SelectedNFTComponent({
 														let orders: Order[] = []
 														setOpenSeaData({ ...openSeaData, orders })
 													}}
-													style={{ transform: "translateX(450px)" }}
+													style={{ transform: 'translateX(450px)' }}
 												>
 													CANCEL
 												</button>
@@ -339,7 +361,7 @@ export function SelectedNFTComponent({
 							id=''
 							placeholder='0x0000****0000'
 						/>
-						<button type='submit'>Transfer NFT</button>
+						<button type='submit'>{transferText}</button>
 					</div>
 				</form>
 			</div>

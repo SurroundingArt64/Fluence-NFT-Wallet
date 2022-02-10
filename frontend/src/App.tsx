@@ -66,7 +66,6 @@ function App() {
 	const [copy, setCopy] = useState(false)
 	const [state, setState] = useState({ address: '', balance: '' })
 	const [ethersConnected, setEthersConnected] = useState(0)
-	const [, setUpdate] = useState(0)
 
 	let signer = useRef<ethers.Wallet | undefined>()
 	let seaport = useRef<OpenSeaPort | undefined>()
