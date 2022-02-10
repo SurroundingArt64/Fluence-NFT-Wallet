@@ -138,7 +138,6 @@ label {
 }
 
 select {
-  font-family: 'helvetica neue', helvetica;
   font-size: 1rem;
   font-weight: 200;
   max-width: 100%;
@@ -277,12 +276,24 @@ a {
 .nft-card-selected {
   padding: 10px;
   border-radius: 20px;
-  width: 100%;
+  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  margin: 0 0 30px 0;
+}
+
+.nft-select {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: start;
+  width: 95%;
+  margin: 0;
+  padding: 0;
+  gap: 0;
 }
 
 .container {
