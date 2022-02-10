@@ -1,18 +1,23 @@
-<!-- [2022-02-08T18:58:13.533045Z INFO  particle_node] node public key = 9GRhTJoFKs6yjPdoitG25DQia5ZMssduBV7Fxr4g2eu2                                                              [2022-02-08T18:58:13.533053Z INFO  particle_node] node server peer id = 12D3KooWJ5nsCSNxWmNU9H9EMV1Mr1VZ4QbzuZiP95UHLqDZvbcx   -->
+# OpenOcean
 
-fldist --node-addr /ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWK688vxsyWwrYhikmyMjo4jaFZLKBRggihSoDKnGoN9ic new_service --ms rust-services/artifacts/private_key_store.wasm:rust-services/config.json -n private_key_store --verbose
+-   A custodial NFT wallet service with following networks:
 
-fldist get_modules --node-addr /ip4/127.0.0.1/tcp/9999/ws/p2p/12D3KooWBGwy9EYT2mMBwk2ynjcMsdV7Je7MCm3MiERQGgaNdWp1 --pretty
+    -   Ethereum (1)
+    -   Polygon (137)
+    -   Rinkeby (4)
+    -   Polygon Mumbai (80_001)
 
-deployment.data
-client seed: 6rGaf9nmp1tqfsLDjgYDbVxVxdXosTnAbunRDNxeZKy7
-client peerId: 12D3KooWFy8qZ2WvSGUuX6pMb7HUJycon9LtmjW21SCcNtbCKNUe
-relay peerId: 12D3KooWBGwy9EYT2mMBwk2ynjcMsdV7Je7MCm3MiERQGgaNdWp1
-service id: 947dc6ae-a5bf-4685-8b71-3b1ef4bd75c7
-service created successfully
+-   The data is stored over Fluence peer network inside Krasnodar node.
 
-client seed: AXs29XWi43GNGrURg6k8qPyefF9Bscc6BZ8iC27gURkt
-client peerId: 12D3KooWGQkehKaZuHTkBP3nCyWhJ7dcwMj4rCav7GKamZJ5k23K
-relay peerId: 12D3KooWK688vxsyWwrYhikmyMjo4jaFZLKBRggihSoDKnGoN9ic
-service id: b94e0c01-c1c6-4874-ab0c-ac23d3c7f65b
-service created successfully
+-   Password is used to encrypt/decrypt the data and store the private key
+
+-   The base of the fluence service was written in Rust and compiled down with Marine in wasi target to run in AVM
+-   The frontend for the wallet was built with React.
+-   Aqua provides tools for building communication with Fluence Network
+
+Functionalities:
+
+-   User can see all his NFTs()
+-   User can place sell bids with OpenSeaAPI
+-   User can accept cancel with OpenSeaAPI
+-   User can transfer out his NFTs
