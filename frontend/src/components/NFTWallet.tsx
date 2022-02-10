@@ -27,7 +27,7 @@ export const NFTWallet: React.FC<{
 		explorer: string
 	}
 	seaport?: OpenSeaPort
-}> = ({ signer, network }) => {
+}> = ({ signer, network, seaport }) => {
 	const [NFTs, setNFTs] = useState<NFTItemProps[]>([])
 	const [selectedNFT, setSelectedNFT] = useState<NFTItemProps>()
 
@@ -56,7 +56,7 @@ export const NFTWallet: React.FC<{
 	return (
 		<>
 			<h1>NFT Wallet</h1>
-			{selectedNFT && <SelectedNFTComponent {...{ signer, network }} elem={selectedNFT} />}
+			{selectedNFT && <SelectedNFTComponent {...{ signer, network, seaport }} elem={selectedNFT} />}
 			<div className='nft'>
 				{NFTs.length > 0 ? (
 					NFTs.map((elem, idx) => (
@@ -254,7 +254,9 @@ function SelectedNFTComponent({
 	signer,
 	elem,
 	network: { explorer, chainId },
+	seaport,
 }: {
+	seaport?: OpenSeaPort
 	signer: ethers.Wallet
 	network: {
 		name: string
@@ -302,6 +304,16 @@ function SelectedNFTComponent({
 		}
 		return baseURL + elem.token_address + '/' + elem.token_id
 	}
+
+	useEffect(() => {
+		const run = async () => {
+			if (seaport && elem) {
+				const resp = await seaport.api.getAsset({ tokenAddress: elem.token_address, tokenId: elem.token_id })
+				console.log({ data: resp })
+			}
+		}
+		run()
+	}, [seaport, elem])
 	const [transfer, setTransfer] = useState(false)
 
 	async function transferTo(address: string) {
