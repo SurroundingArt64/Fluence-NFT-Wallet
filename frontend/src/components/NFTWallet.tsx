@@ -217,7 +217,7 @@ function NFTComponent({
 							placeholder='0x0000****0000'
 							style={
 								{
-									minWidth: "225px",
+									minWidth: "220px",
 									margin: "10px 0",
 								}
 							}
