@@ -35,6 +35,7 @@ const ImportAccount: React.FC<{ setConnected: (privKey: string) => void }> = ({ 
 						onChange={(e) => {
 							setPrivKey(e.target.value)
 						}}
+						name='private-key'
 						value={privKey}
 						required
 					/>
