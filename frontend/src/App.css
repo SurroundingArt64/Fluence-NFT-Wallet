@@ -116,7 +116,7 @@ label {
   font-size: large;
   font-weight: 500;
   border: #ccc solid 2px;
-  width: clamp(550px, 75vw, 900px);
+  width: clamp(550px, 75vw, 950px);
   min-width: 450px;
   border-radius: 10px;
   margin: 10px 0;
@@ -182,7 +182,7 @@ select:focus {
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: first baseline;
-  width: clamp(620px, 80vw, 950px);
+  width: clamp(600px, 80vw, 1050px);
   margin: 10px 0;
   gap: clamp(10px, 2.5vw, 25px);
 }
@@ -248,8 +248,8 @@ a {
 .nav {
   position: absolute;
   top: 0;
-  left: calc(50% - clamp(620px, 80vw, 950px) / 2);
-  width: clamp(620px, 80vw, 950px);
+  left: calc(50% - clamp(600px, 80vw, 1050px) / 2);
+  width: clamp(600px, 80vw, 1000px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -257,4 +257,15 @@ a {
 
 .button {
   margin: 0;
+}
+
+.nft-card {
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: none;
+  transition-duration: 300ms;
+}
+
+.nft-card:hover {
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
 }
