@@ -6,7 +6,7 @@ import './App.css'
 import { CreateAccount } from './components/CreateAccount'
 import Login from './components/Login'
 import { NFTWallet } from './components/NFTWallet'
-
+import HDWalletProvider from '@truffle/hdwallet-provider'
 function App() {
 	const [currentState, updateCurrentState] = useState<'CREATE' | 'IMPORT' | 'LOGIN' | 'CONNECTED'>()
 	const networks: {
@@ -55,9 +55,11 @@ function App() {
 	const [copy, setCopy] = useState(false)
 	const [state, setState] = useState({ address: '', balance: '' })
 	const [ethersConnected, setEthersConnected] = useState(0)
-	const [port, setPort] = useState<OpenSeaPort>()
 	let signer = useRef<ethers.Wallet | undefined>()
+	let seaport = useRef<OpenSeaPort | undefined>()
+	let _privKey: string
 	const initEthers = async (privKey: string) => {
+		_privKey = privKey
 		signer.current = new Wallet(privKey)
 		let address = await signer.current.getAddress()
 		if (signer) {
@@ -66,12 +68,16 @@ function App() {
 			let balance = await signer.current.getBalance()
 			setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
 			setEthersConnected((s) => s + 1)
-			const seaport = new OpenSeaPort(provider, {
-				networkName: Network.Main,
-				apiKey: '',
-			})
-			setPort(seaport)
-			console.log(seaport)
+
+			seaport.current = new OpenSeaPort(
+				new HDWalletProvider({
+					privateKeys: [privKey],
+					providerOrUrl: network.rpcURL,
+				}),
+				{
+					networkName: Network.Main,
+				}
+			)
 		}
 	}
 
@@ -84,12 +90,22 @@ function App() {
 					setEthersConnected((s) => s + 1)
 					let balance = await signer.current.getBalance()
 					let address = await signer.current.getAddress()
-
+					seaport.current = new OpenSeaPort(
+						new HDWalletProvider({
+							privateKeys: [_privKey],
+							providerOrUrl: network.rpcURL,
+						}),
+						{
+							networkName: Network.Main,
+							apiKey: '',
+						}
+					)
 					setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
 				}
 			}
 			run()
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [network, currentState])
 
 	const setConnected = (privKey: string) => {
@@ -173,7 +189,7 @@ function App() {
 								</button>
 							</h2>
 							{ethersConnected > 0 && signer.current && (
-								<NFTWallet network={network} signer={signer.current} />
+								<NFTWallet seaport={seaport.current} network={network} signer={signer.current} />
 							)}{' '}
 						</div>
 					</>

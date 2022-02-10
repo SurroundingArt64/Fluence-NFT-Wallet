@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ethers } from 'ethers'
+import { OpenSeaPort } from 'opensea-js'
 import React, { useEffect, useState } from 'react'
 import { ERC721ABI, MORALIS_API_KEY } from '../config'
 
@@ -25,6 +26,7 @@ export const NFTWallet: React.FC<{
 		moralisIdx: string
 		explorer: string
 	}
+	seaport?: OpenSeaPort
 }> = ({ signer, network }) => {
 	const [NFTs, setNFTs] = useState<NFTItemProps[]>([])
 	const [selectedNFT, setSelectedNFT] = useState<NFTItemProps>()
@@ -57,7 +59,11 @@ export const NFTWallet: React.FC<{
 			{selectedNFT && <SelectedNFTComponent {...{ signer, network }} elem={selectedNFT} />}
 			<div className='nft'>
 				{NFTs.length > 0 ? (
-					NFTs.map((elem, idx) => <NFTComponent signer={signer} network={network} idx={idx} elem={elem} />)
+					NFTs.map((elem, idx) => (
+						<div key={idx} onClick={() => setSelectedNFT(elem)}>
+							<NFTComponent signer={signer} network={network} idx={idx} elem={elem} />
+						</div>
+					))
 				) : (
 					<h2
 						style={{
