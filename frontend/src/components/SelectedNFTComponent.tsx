@@ -296,27 +296,12 @@ export function SelectedNFTComponent({
 						e.preventDefault()
 						if (transferToAddress) transferTo(transferToAddress)
 					}}
-					style={{
-						border: '2px solid #ccc',
-						borderRadius: '10px',
-						padding: '10px',
-						display: 'flex',
-						alignItems: 'flex-start',
-					}}
+					className='form'
 				>
-					<label
-						style={{
-							fontSize: '1.2rem',
-						}}
-					>
+					<label>
 						Transfer ↗
 					</label>
-					<div
-						style={{
-							padding: 0,
-							margin: '10px 0 0 0',
-						}}
-					>
+					<div>
 						<input
 							type='text'
 							value={transferToAddress}
@@ -325,11 +310,6 @@ export function SelectedNFTComponent({
 							}}
 							id=''
 							placeholder='0x0000****0000'
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-							}}
 						/>
 						<button type='submit'>Transfer NFT</button>
 					</div>
