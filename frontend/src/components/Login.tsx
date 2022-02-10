@@ -20,7 +20,7 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 		<>
 			<h2>LOGIN</h2>
 			<p>Enter your address and password</p>
-			<form>
+			<form onSubmit={handleLogin}>
 				<div className='Form'>
 					<label htmlFor='addr'>Address</label>
 					<input
@@ -46,7 +46,7 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 					/>
 				</div>
 				<span style={{ height: "25px" }} />
-				<button type='submit' onClick={handleLogin}>LOGIN</button>
+				<button type='submit'>LOGIN</button>
 			</form>
 		</>
 	)
