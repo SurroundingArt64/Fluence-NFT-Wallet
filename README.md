@@ -1,5 +1,7 @@
 # OpenOcean
 
+<img src="./images/main.png"/>
+
 Video Link: https://www.youtube.com/watch?v=iWWCuAh-2xk
 
 -   A custodial NFT wallet service with following networks:
@@ -56,6 +58,3 @@ If re-deploying peer further instructions:
     -   PRIVATE_KEY_SERVICE_ID
 
 And, re-compile aqua
-
-Screenshots:
-<img src="./images/main.png"/>
