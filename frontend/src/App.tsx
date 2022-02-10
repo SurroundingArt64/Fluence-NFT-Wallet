@@ -1,4 +1,5 @@
 import { ethers, Wallet, providers } from 'ethers'
+import { Network, OpenSeaPort } from 'opensea-js'
 import React, { useEffect, useRef, useState } from 'react'
 import './App.css'
 
@@ -54,6 +55,7 @@ function App() {
 	const [copy, setCopy] = useState(false)
 	const [state, setState] = useState({ address: '', balance: '' })
 	const [ethersConnected, setEthersConnected] = useState(0)
+	const [port, setPort] = useState<OpenSeaPort>()
 	let signer = useRef<ethers.Wallet | undefined>()
 	const initEthers = async (privKey: string) => {
 		signer.current = new Wallet(privKey)
@@ -64,6 +66,12 @@ function App() {
 			let balance = await signer.current.getBalance()
 			setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
 			setEthersConnected((s) => s + 1)
+			const seaport = new OpenSeaPort(provider, {
+				networkName: Network.Main,
+				apiKey: ''
+			})
+			setPort(seaport)
+			console.log(seaport)
 		}
 	}
 
