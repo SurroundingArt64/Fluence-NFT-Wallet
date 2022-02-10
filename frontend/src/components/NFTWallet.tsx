@@ -59,7 +59,7 @@ export const NFTWallet: React.FC<{
 					<NFTComponent signer={signer} network={network} idx={idx} elem={elem} />
 				)) : (
 					<h2 style={{
-						height: 'calc(100vh - 600px)',
+						height: 'calc(100vh - 60vh)',
 					}}>
 						No NFTs found, choose another network?
 					</h2>
@@ -206,23 +206,40 @@ function NFTComponent({
 							e.preventDefault()
 							if (transferToAddress) transferTo(transferToAddress)
 						}}
+						style={{
+							border: '1px solid #ccc',
+							borderRadius: '10px',
+							padding: '10px',
+							display: 'flex',
+							alignItems: 'flex-start',
+						}}
 					>
-						<input
-							type='text'
-							value={transferToAddress}
-							onChange={(e) => {
-								setTransferTo(e.target.value)
-							}}
-							id=''
-							placeholder='0x0000****0000'
-							style={
-								{
-									minWidth: "220px",
-									margin: "10px 0",
-								}
-							}
-						/>
-						<button type='submit'>Transfer NFT</button>
+						<label style={{
+							fontSize: "1.2rem",
+						}}>Transfer ↗</label>
+						<div style={{
+							padding: 0,
+							width: "235px",
+							margin: "10px 0 0 0",
+						}}>
+							<input
+								type='text'
+								value={transferToAddress}
+								onChange={(e) => {
+									setTransferTo(e.target.value)
+								}}
+								id=''
+								placeholder='0x0000****0000'
+								style={{
+									minWidth: "100px",
+									width: "175px",
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+								}}
+							/>
+							<button type='submit'>Transfer NFT</button>
+						</div>
 					</form>)
 				}
 			</div>
