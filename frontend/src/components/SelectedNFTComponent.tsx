@@ -227,30 +227,37 @@ export function SelectedNFTComponent({
 				{openSeaData && (
 					<>
 						{openSeaData.orders.length > 0 && (
-							<div>
-								<p>Orders:</p>
+							<div className='form'>
+								<label>Orders:</label>
 								{openSeaData.orders.map((elem) => {
 									if (elem.basePrice && elem.currentPrice)
 										return (
-											<>
-												<p>
-													Base Price:{' '}
-													{ethers.utils.formatEther(elem.basePrice.toString()).toString()}
-												</p>
-												<p>
-													Current Price:{' '}
-													{ethers.utils.formatEther(elem.currentPrice.toString()).toString()}
-												</p>
-												<p>
-													<button
-														onClick={() => {
-															cancelOrder(elem)
-														}}
-													>
-														Cancel Order
-													</button>
-												</p>
-											</>
+											<div style={{ width: "97%", margin: "0 0 0 10px", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", position: 'relative' }}>
+												<div className='item' style={{ height: "40px" }}>
+													<p>Base Price:</p>
+													<p>
+														<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
+															{ethers.utils.formatEther(elem.basePrice.toString()).toString()}
+														</a>
+													</p>
+												</div>
+												<div className='item' style={{ height: "40px" }}>
+													<p>Current Price:</p>
+													<p>
+														<a href={explorer + 'tx/' + tx} target='_blank' rel='noopener noreferrer'>
+															{ethers.utils.formatEther(elem.currentPrice.toString()).toString()}
+														</a>
+													</p>
+												</div>
+												<button
+													onClick={() => {
+														cancelOrder(elem)
+													}}
+													style={{ position: "absolute", right: "-80px", top: "-60px", borderRadius: "100px", padding: "0", width: "100px", height: "30px" }}
+												>
+													CANCEL
+												</button>
+											</div>
 										)
 									return <></>
 								})}
