@@ -153,7 +153,6 @@ export function SelectedNFTComponent({
 					<div
 						style={{
 							padding: 0,
-							width: '235px',
 							margin: '10px 0 0 0',
 						}}
 					>
@@ -166,8 +165,6 @@ export function SelectedNFTComponent({
 							id=''
 							placeholder='0x0000****0000'
 							style={{
-								minWidth: '100px',
-								width: '175px',
 								display: 'flex',
 								alignItems: 'center',
 								justifyContent: 'center',
@@ -177,6 +174,6 @@ export function SelectedNFTComponent({
 					</div>
 				</form>
 			</div>
-		</div>
+		</div >
 	)
 }

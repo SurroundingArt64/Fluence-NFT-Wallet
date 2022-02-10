@@ -34,6 +34,10 @@ export const NFTWallet: React.FC<{
 	const [selectedNFT, setSelectedNFT] = useState<NFTItemProps>()
 
 	useEffect(() => {
+		setSelectedNFT(undefined)
+	}, [network])
+
+	useEffect(() => {
 		if (network && signer) {
 			const run = async () => {
 				try {

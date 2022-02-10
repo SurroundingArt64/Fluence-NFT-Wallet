@@ -250,8 +250,8 @@ a {
 .nav {
   position: absolute;
   top: 0;
-  left: calc(50% - clamp(600px, 100vw, 1100px) / 2);
-  width: clamp(600px, 80vw, 1050px);
+  left: auto;
+  width: clamp(600px, 83.33vw, 1100px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -300,7 +300,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 300px;
+  width: 100%;
   margin: 10px 0 0 0;
 }
 
@@ -315,4 +315,8 @@ a {
   margin: 0 25px;
   padding: 0;
   gap: 25px;
+}
+
+.options > * {
+  width: 100%;
 }
