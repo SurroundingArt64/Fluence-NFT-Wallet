@@ -18,20 +18,20 @@ function App() {
 		explorer: string
 	}[] = [
 		{
-			name: 'Ethereum',
-			chainId: 1,
-			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-			moralisIdx: 'eth',
-			token: 'ETH',
-			explorer: 'https://etherscan.io/',
-		},
-		{
 			name: 'Rinkeby',
 			chainId: 4,
 			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
 			moralisIdx: 'rinkeby',
 			token: 'rETH',
 			explorer: 'https://rinkeby.etherscan.io/',
+		},
+		{
+			name: 'Ethereum',
+			chainId: 1,
+			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+			moralisIdx: 'eth',
+			token: 'ETH',
+			explorer: 'https://etherscan.io/',
 		},
 		{
 			name: 'Polygon',
@@ -75,9 +75,10 @@ function App() {
 					providerOrUrl: network.rpcURL,
 				}),
 				{
-					networkName: Network.Main,
+					networkName: Network.Rinkeby,
 				}
 			)
+			;(window as any).seaport = seaport.current
 		}
 	}
 
@@ -87,20 +88,20 @@ function App() {
 			const run = async () => {
 				if (signer.current) {
 					signer.current = signer.current.connect(provider)
-					setEthersConnected((s) => s + 1)
-					let balance = await signer.current.getBalance()
-					let address = await signer.current.getAddress()
 					seaport.current = new OpenSeaPort(
 						new HDWalletProvider({
 							privateKeys: [_privKey],
 							providerOrUrl: network.rpcURL,
 						}),
 						{
-							networkName: Network.Main,
+							networkName: network.chainId === 1 ? Network.Main : Network.Rinkeby,
 							apiKey: '',
 						}
 					)
+					let balance = await signer.current.getBalance()
+					let address = await signer.current.getAddress()
 					setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
+					setEthersConnected((s) => s + 1)
 				}
 			}
 			run()
