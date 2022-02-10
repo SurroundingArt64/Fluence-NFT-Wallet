@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { DB_NAME } from '../config'
 import { store_private_key_data } from '../_aqua/main'
 
-export function CreateAccount({ setConnected }: { setConnected: (privKey: string) => void }) {
+export const CreateAccount: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConnected }) => {
 	const [state, setState] = useState<{
 		password: string
 		repeatPassword: string
@@ -49,6 +49,8 @@ Public  Key: ${randomWallet.address}
 							randomWallet.privateKey,
 							state.password
 						)
+
+						console.log(data)
 
 						setConnected(randomWallet.privateKey)
 						await Fluence.stop()
