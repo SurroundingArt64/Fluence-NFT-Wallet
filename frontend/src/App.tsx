@@ -67,16 +67,7 @@ function App() {
 	const [copy, setCopy] = useState(false)
 	const [state, setState] = useState({ address: '', balance: '' })
 	const [ethersConnected, setEthersConnected] = useState(0)
-	const [update, setUpdate] = useState(0)
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setUpdate((update) => update + 1)
-		}, 5_000)
-		return () => {
-			clearInterval(interval)
-		}
-	}, [])
+	const [, setUpdate] = useState(0)
 
 	let signer = useRef<ethers.Wallet | undefined>()
 	let seaport = useRef<OpenSeaPort | undefined>()
@@ -90,7 +81,6 @@ function App() {
 			let balance = await signer.current.getBalance()
 			setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
 			setEthersConnected((s) => s + 1)
-			console.log(privKey)
 
 			const hdWallet = getHdWallet(privKey, network.rpcURL)
 			seaport.current = new OpenSeaPort(hdWallet, {
@@ -100,7 +90,15 @@ function App() {
 		}
 	}
 
+	const updateBalance = async (signer: ethers.Signer) => {
+		let balance = await signer.getBalance()
+		let address = await signer.getAddress()
+		setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
+		setEthersConnected((s) => s + 1)
+	}
+
 	useEffect(() => {
+		let interval: any
 		if (network && currentState === 'CONNECTED' && signer) {
 			let provider = new providers.JsonRpcProvider(network.rpcURL)
 			const run = async () => {
@@ -112,6 +110,13 @@ function App() {
 						networkName: network.chainId === 1 ? Network.Main : Network.Rinkeby,
 						apiKey: '',
 					})
+
+					if (interval) clearInterval(interval)
+
+					interval = setInterval(() => {
+						if (signer.current) updateBalance(signer.current)
+					}, 5_000)
+
 					let balance = await signer.current.getBalance()
 					let address = await signer.current.getAddress()
 					setState((state) => ({ ...state, address, balance: ethers.utils.formatEther(balance) }))
@@ -120,8 +125,11 @@ function App() {
 			}
 			run()
 		}
+		return () => {
+			clearInterval(interval)
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [network, currentState, update])
+	}, [network, currentState])
 
 	const setConnected = (privKey: string) => {
 		updateCurrentState('CONNECTED')
