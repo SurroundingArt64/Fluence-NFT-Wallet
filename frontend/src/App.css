@@ -115,7 +115,7 @@ label {
   font-size: large;
   font-weight: 500;
   border: #ccc solid 2px;
-  width: 100%;
+  width: clamp(550px, 75vw, 900px);
   min-width: 450px;
   border-radius: 10px;
   margin: 10px 0;
@@ -180,11 +180,10 @@ select:focus {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  justify-content: space-between;
-  width: 100%;
-  min-width: 450px;
+  justify-content: first baseline;
+  width: clamp(620px, 80vw, 950px);
   margin: 10px 0;
-  gap: 25px;
+  gap: clamp(10px, 2.5vw, 25px);
 }
 
 img {
@@ -243,4 +242,18 @@ h5 {
 a {
   color: black;
   text-decoration: none;
+}
+
+.nav {
+  position: absolute;
+  top: 0;
+  left: calc(50% - clamp(620px, 80vw, 950px) / 2);
+  width: clamp(620px, 80vw, 950px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  margin: 0;
 }

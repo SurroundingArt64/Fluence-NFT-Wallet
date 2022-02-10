@@ -55,9 +55,15 @@ export const NFTWallet: React.FC<{
 		<>
 			<h1>NFT Wallet</h1>
 			<div className='nft'>
-				{NFTs.map((elem, idx) => (
+				{NFTs.length > 0 ? NFTs.map((elem, idx) => (
 					<NFTComponent signer={signer} network={network} idx={idx} elem={elem} />
-				))}
+				)) : (
+					<h2 style={{
+						height: 'calc(100vh - 600px)',
+					}}>
+						No NFTs found, choose another network?
+					</h2>
+				)}
 			</div>
 		</>
 	)
