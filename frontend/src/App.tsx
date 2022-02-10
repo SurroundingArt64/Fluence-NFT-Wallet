@@ -194,33 +194,35 @@ function App() {
 						</div>
 					</>
 				)}
-				{currentState && (
-					<button
-						onClick={() => {
-							updateCurrentState(undefined)
-						}}
-						style={{
-							position: 'absolute',
-							top: '10px',
-							right: '10px',
-						}}
-					>
-						Back
-					</button>
-				)}
-				{currentState && (
-					<h2
-						style={{
-							position: 'absolute',
-							top: '-5px',
-							left: '25px',
-							textTransform: 'uppercase',
-							fontSize: '2rem',
-						}}
-					>
-						OpenOcean
-					</h2>
-				)}
+				<div className='nav'>
+					{currentState && (
+						<button
+							onClick={() => {
+								updateCurrentState(undefined)
+							}}
+							style={{
+								position: 'absolute',
+								top: '10px',
+								right: '10px',
+							}}
+						>
+							Back
+						</button>
+					)}
+					{currentState && (
+						<h2
+							style={{
+								position: 'absolute',
+								top: '-5px',
+								left: '25px',
+								textTransform: 'uppercase',
+								fontSize: '2rem',
+							}}
+						>
+							OpenOcean
+						</h2>
+					)}
+				</div>
 			</header>
 		</div>
 	)
