@@ -32,7 +32,7 @@ export function SelectedNFTComponent({
 	}>()
 
 	const [transferText, setTransferText] = useState('Transfer')
-
+	const [submitText, setSubmitText] = useState('Submit Bid')
 	const [openSeaData, setOpenSeaData] = useState<{
 		collection: { name?: string; stats?: { floor_price?: number } }
 		orders: Order[]
@@ -300,12 +300,14 @@ export function SelectedNFTComponent({
 								<form
 									onSubmit={async (e) => {
 										e.preventDefault()
+										setSubmitText('Submitting')
 										if (sellOrder?.expirationTime && sellOrder.startAmount) {
 											await createOrder(
 												sellOrder.startAmount,
 												new Date(sellOrder.expirationTime).getTime()
 											)
 										}
+										setSubmitText('Submitted')
 									}}
 									className='form'
 								>
@@ -335,7 +337,7 @@ export function SelectedNFTComponent({
 											id=''
 										/>
 										<button type='submit' style={{ width: '170px' }}>
-											Submit Bid
+											{submitText}
 										</button>
 									</div>
 								</form>
