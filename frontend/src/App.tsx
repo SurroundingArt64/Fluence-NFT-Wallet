@@ -7,7 +7,7 @@ import { CreateAccount } from './components/CreateAccount'
 import Login from './components/Login'
 import { NFTWallet } from './components/NFTWallet'
 import HDWalletProvider from '@truffle/hdwallet-provider'
-	; (window as any).HDWallet = HDWalletProvider
+;(window as any).HDWallet = HDWalletProvider
 //
 
 const getHdWallet = (privateKey: string, url: string) => {
@@ -29,44 +29,55 @@ function App() {
 		token: string
 		explorer: string
 	}[] = [
-			{
-				name: 'Rinkeby',
-				chainId: 4,
-				rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-				moralisIdx: 'rinkeby',
-				token: 'rETH',
-				explorer: 'https://rinkeby.etherscan.io/',
-			},
-			{
-				name: 'Ethereum',
-				chainId: 1,
-				rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
-				moralisIdx: 'eth',
-				token: 'ETH',
-				explorer: 'https://etherscan.io/',
-			},
-			{
-				name: 'Polygon',
-				chainId: 137,
-				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
-				moralisIdx: 'polygon',
-				token: 'MATIC',
-				explorer: 'https://polygonscan.com/',
-			},
-			{
-				name: 'Mumbai',
-				chainId: 80001,
-				rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
-				moralisIdx: 'mumbai',
-				token: 'tMATIC',
-				explorer: 'https://mumbai.polygonscan.com/',
-			},
-		]
+		{
+			name: 'Rinkeby',
+			chainId: 4,
+			rpcURL: `https://rinkeby.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+			moralisIdx: 'rinkeby',
+			token: 'rETH',
+			explorer: 'https://rinkeby.etherscan.io/',
+		},
+		{
+			name: 'Ethereum',
+			chainId: 1,
+			rpcURL: `https://mainnet.infura.io/v3/87a23938d0094e42b8856a49b25b4821`,
+			moralisIdx: 'eth',
+			token: 'ETH',
+			explorer: 'https://etherscan.io/',
+		},
+		{
+			name: 'Polygon',
+			chainId: 137,
+			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mainnet`,
+			moralisIdx: 'polygon',
+			token: 'MATIC',
+			explorer: 'https://polygonscan.com/',
+		},
+		{
+			name: 'Mumbai',
+			chainId: 80001,
+			rpcURL: `https://speedy-nodes-nyc.moralis.io/4df3cf69e6c903f093201c6f/polygon/mumbai`,
+			moralisIdx: 'mumbai',
+			token: 'tMATIC',
+			explorer: 'https://mumbai.polygonscan.com/',
+		},
+	]
 
 	const [network, setNetwork] = useState(networks[0])
 	const [copy, setCopy] = useState(false)
 	const [state, setState] = useState({ address: '', balance: '' })
 	const [ethersConnected, setEthersConnected] = useState(0)
+	const [update, setUpdate] = useState(0)
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setUpdate((update) => update + 1)
+		}, 5_000)
+		return () => {
+			clearInterval(interval)
+		}
+	}, [])
+
 	let signer = useRef<ethers.Wallet | undefined>()
 	let seaport = useRef<OpenSeaPort | undefined>()
 	const initEthers = async (privKey: string) => {
@@ -85,7 +96,7 @@ function App() {
 			seaport.current = new OpenSeaPort(hdWallet, {
 				networkName: Network.Rinkeby,
 			})
-				; (window as any).seaport = seaport.current
+			;(window as any).seaport = seaport.current
 		}
 	}
 
@@ -110,7 +121,7 @@ function App() {
 			run()
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [network, currentState])
+	}, [network, currentState, update])
 
 	const setConnected = (privKey: string) => {
 		updateCurrentState('CONNECTED')
@@ -184,7 +195,11 @@ function App() {
 									>
 										{networks.map((elem) => {
 											return (
-												<option style={{ cursor: 'pointer' }} value={elem.name} key={elem.chainId}>
+												<option
+													style={{ cursor: 'pointer' }}
+													value={elem.name}
+													key={elem.chainId}
+												>
 													{`${elem.name}(${elem.chainId})`}
 												</option>
 											)
