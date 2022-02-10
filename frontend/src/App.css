@@ -183,7 +183,7 @@ select:focus {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  justify-content: first baseline;
+  justify-content: flex-start;
   width: clamp(600px, 80vw, 1050px);
   margin: 10px 0;
   gap: clamp(10px, 2.5vw, 25px);
@@ -327,6 +327,9 @@ a {
   align-items: flex-start;
   justify-content: center;
   width: 100%;
+  border: #ccc solid 2px;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .form > div {

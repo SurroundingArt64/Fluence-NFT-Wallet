@@ -182,6 +182,12 @@ export function SelectedNFTComponent({
 							<h5>TOKEN ID</h5>
 							<p>{elem.symbol}</p>
 						</div>
+						{openSeaData &&
+							<div className='item'>
+								<h5>Collection</h5>
+								<p>{openSeaData.collection.name}</p>
+							</div>
+						}
 						<div className='item'>
 							<h5>Visit Explorer</h5>
 							<p>
@@ -220,7 +226,6 @@ export function SelectedNFTComponent({
 			<div className='options'>
 				{openSeaData && (
 					<>
-						<p>Collection Name: {openSeaData.collection.name}</p>
 						{openSeaData.orders.length > 0 && (
 							<div>
 								<p>Orders:</p>
@@ -263,29 +268,35 @@ export function SelectedNFTComponent({
 											)
 										}
 									}}
+									className='form'
 								>
+									<label style={{ fontSize: "1.2rem", fontWeight: "400" }}>Place Bid</label>
+									<label htmlFor="bid">Set Bid Amount</label>
 									<input
 										type='number'
-										name=''
-										placeholder='Bid Amount Start (ETH)'
+										name='bid'
+										placeholder='0.00000000'
 										onChange={(e) => {
 											setSellOrder({ ...sellOrder, startAmount: parseFloat(e.target.value) })
 										}}
 										value={sellOrder?.startAmount}
 										id=''
 									/>
-									<input
-										type='datetime-local'
-										name=''
-										placeholder='Expiration'
-										onChange={(e) => {
-											console.log(e.target.value)
-											setSellOrder({ ...sellOrder, expirationTime: e.target.value })
-										}}
-										value={sellOrder?.expirationTime}
-										id=''
-									/>
-									<input type='submit' name='' value='Submit' id='' />
+									<label htmlFor="time">Bid End Time</label>
+									<div className='item'>
+										<input
+											type='datetime-local'
+											name='time'
+											placeholder='Expiration'
+											onChange={(e) => {
+												console.log(e.target.value)
+												setSellOrder({ ...sellOrder, expirationTime: e.target.value })
+											}}
+											value={sellOrder?.expirationTime}
+											id=''
+										/>
+										<button type='submit' style={{ width: "170px" }}>Submit Bid</button>
+									</div>
 								</form>
 							</>
 						)}
