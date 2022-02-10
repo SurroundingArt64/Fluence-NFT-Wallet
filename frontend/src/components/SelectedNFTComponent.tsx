@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { ethers } from 'ethers'
 import { OpenSeaPort } from 'opensea-js'
-import { Order } from 'opensea-js/lib/types'
-import React, { useEffect, useState } from 'react'
+import { EventType, Order } from 'opensea-js/lib/types'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ERC721ABI } from '../config'
 import { NFTItemProps } from './NFTWallet'
 
@@ -26,6 +26,10 @@ export function SelectedNFTComponent({
 	const [tokenURI, setTokenURI] = useState('')
 	const [transferToAddress, setTransferTo] = useState('')
 	const [tx, setTx] = useState()
+	const [sellOrder, setSellOrder] = useState<{
+		startAmount?: number
+		expirationTime?: string
+	}>()
 
 	const [openSeaData, setOpenSeaData] = useState<{
 		collection: { name?: string; stats?: { floor_price?: number } }
@@ -34,6 +38,19 @@ export function SelectedNFTComponent({
 
 	const cancelOrder = async (order: Order) => {
 		seaport?.cancelOrder({ order, accountAddress: signer.address })
+	}
+
+	const createOrder = async (startAmount: number, expirationTime: number) => {
+		await seaport?.createSellOrder({
+			asset: {
+				tokenAddress: elem.token_address,
+				tokenId: elem.token_id,
+			},
+			accountAddress: signer.address,
+			startAmount: startAmount,
+			expirationTime: Math.floor(expirationTime / 1000),
+			endAmount: 0.1,
+		})
 	}
 
 	useEffect(() => {
@@ -81,6 +98,65 @@ export function SelectedNFTComponent({
 		}
 		run()
 	}, [seaport, elem])
+
+	const handleSeaportEvents = useCallback(() => {
+		if (seaport) {
+			seaport.addListener(EventType.TransactionCreated, ({ transactionHash, event }) => {
+				console.log({ transactionHash, event })
+			})
+			seaport.addListener(EventType.TransactionConfirmed, ({ transactionHash, event }) => {
+				console.log({ transactionHash, event })
+				// Only reset your exchange UI if we're finishing an order fulfillment or cancellation
+				if (event === EventType.MatchOrders || event === EventType.CancelOrder) {
+				}
+			})
+			seaport.addListener(EventType.TransactionDenied, ({ transactionHash, event }) => {
+				console.log({ transactionHash, event })
+			})
+			seaport.addListener(EventType.TransactionFailed, ({ transactionHash, event }) => {
+				console.log({ transactionHash, event })
+			})
+			seaport.addListener(EventType.InitializeAccount, ({ accountAddress }) => {
+				console.log({ accountAddress })
+			})
+			seaport.addListener(EventType.WrapEth, ({ accountAddress, amount }) => {
+				console.log({ accountAddress, amount })
+			})
+			seaport.addListener(EventType.UnwrapWeth, ({ accountAddress, amount }) => {
+				console.log({ accountAddress, amount })
+			})
+			seaport.addListener(EventType.ApproveCurrency, ({ accountAddress }) => {
+				console.log({ accountAddress })
+			})
+			seaport.addListener(EventType.ApproveAllAssets, ({ accountAddress, proxyAddress }) => {
+				console.log({ accountAddress, proxyAddress })
+			})
+			seaport.addListener(EventType.ApproveAsset, ({ accountAddress, proxyAddress }) => {
+				console.log({ accountAddress, proxyAddress })
+			})
+			seaport.addListener(EventType.CreateOrder, ({ order, accountAddress }) => {
+				console.log({ order, accountAddress })
+			})
+			seaport.addListener(EventType.OrderDenied, ({ order, accountAddress }) => {
+				console.log({ order, accountAddress })
+			})
+			seaport.addListener(EventType.MatchOrders, ({ buy, sell, accountAddress }) => {
+				console.log({ buy, sell, accountAddress })
+			})
+			seaport.addListener(EventType.CancelOrder, ({ order, accountAddress }) => {
+				console.log({ order, accountAddress })
+			})
+		}
+	}, [seaport])
+
+	useEffect(() => {
+		if (seaport) {
+			handleSeaportEvents()
+		}
+		return () => {
+			seaport!.removeAllListeners()
+		}
+	}, [seaport, handleSeaportEvents])
 
 	async function transferTo(address: string) {
 		const tx = await new ethers.Contract(elem.token_address, ERC721ABI)
@@ -178,11 +254,37 @@ export function SelectedNFTComponent({
 						{openSeaData.orders.length === 0 && (
 							<>
 								<form
-									onSubmit={(e) => {
+									onSubmit={async (e) => {
 										e.preventDefault()
+										if (sellOrder?.expirationTime && sellOrder.startAmount) {
+											await createOrder(
+												sellOrder.startAmount,
+												new Date(sellOrder.expirationTime).getTime()
+											)
+										}
 									}}
 								>
-									<input type='text' name='' id='' />
+									<input
+										type='number'
+										name=''
+										placeholder='Bid Amount Start (ETH)'
+										onChange={(e) => {
+											setSellOrder({ ...sellOrder, startAmount: parseFloat(e.target.value) })
+										}}
+										value={sellOrder?.startAmount}
+										id=''
+									/>
+									<input
+										type='datetime-local'
+										name=''
+										placeholder='Expiration'
+										onChange={(e) => {
+											console.log(e.target.value)
+											setSellOrder({ ...sellOrder, expirationTime: e.target.value })
+										}}
+										value={sellOrder?.expirationTime}
+										id=''
+									/>
 									<input type='submit' name='' value='Submit' id='' />
 								</form>
 							</>
