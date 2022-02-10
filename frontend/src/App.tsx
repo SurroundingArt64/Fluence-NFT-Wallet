@@ -7,6 +7,7 @@ import { CreateAccount } from './components/CreateAccount'
 import Login from './components/Login'
 import { NFTWallet } from './components/NFTWallet'
 import HDWalletProvider from '@truffle/hdwallet-provider'
+import ImportAccount from './components/ImportAccount'
 ;(window as any).HDWallet = HDWalletProvider
 //
 
@@ -165,6 +166,7 @@ function App() {
 				)}
 				{currentState === 'CREATE' && <CreateAccount setConnected={setConnected} />}
 				{currentState === 'LOGIN' && <Login setConnected={setConnected} />}
+				{currentState === 'IMPORT' && <ImportAccount setConnected={setConnected} />}
 				{currentState === 'CONNECTED' && (
 					<>
 						<div className='Connected'>

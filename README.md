@@ -52,3 +52,5 @@ If re-deploying peer further instructions:
 -   Update the following values in frontend/aqua/main.aqua
     -   PRIVATE_KEY_NODE_PEER_ID
     -   PRIVATE_KEY_SERVICE_ID
+
+And, re-compile aqua
