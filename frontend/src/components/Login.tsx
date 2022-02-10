@@ -24,7 +24,7 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 				<div className='Form'>
 					<label htmlFor='addr'>Address</label>
 					<input
-						type='text'
+						type='username'
 						placeholder='0x0000....0000'
 						onChange={(e) => {
 							setAddr(e.target.value)
@@ -37,6 +37,7 @@ const Login: React.FC<{ setConnected: (privKey: string) => void }> = ({ setConne
 					<label htmlFor='password'>Password</label>
 					<input
 						type='password'
+						security='true'
 						placeholder='********'
 						onChange={(e) => {
 							setPassword(e.target.value)
