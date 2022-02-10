@@ -260,6 +260,8 @@ export function SelectedNFTComponent({
 												<button
 													onClick={() => {
 														cancelOrder(elem)
+														let orders: Order[] = []
+														setOpenSeaData({ ...openSeaData, orders })
 													}}
 													style={{ transform: "translateX(450px)" }}
 												>
