@@ -11,7 +11,6 @@ import HDWalletProvider from '@truffle/hdwallet-provider'
 //
 
 const getHdWallet = (privateKey: string, url: string) => {
-	console.log('getHdWallet', privateKey, url)
 	return new HDWalletProvider({
 		privateKeys: [privateKey],
 		providerOrUrl: url,
@@ -105,7 +104,6 @@ function App() {
 				if (signer.current) {
 					signer.current = signer.current.connect(provider)
 					const hdWallet = getHdWallet(_privKey, network.rpcURL)
-					console.log(hdWallet, _privKey)
 					seaport.current = new OpenSeaPort(hdWallet, {
 						networkName: network.chainId === 1 ? Network.Main : Network.Rinkeby,
 						apiKey: '',

@@ -31,6 +31,8 @@ export function SelectedNFTComponent({
 		expirationTime?: string
 	}>()
 
+	const [transferText, setTransferText] = useState('Transfer')
+
 	const [openSeaData, setOpenSeaData] = useState<{
 		collection: { name?: string; stats?: { floor_price?: number } }
 		orders: Order[]
@@ -55,7 +57,6 @@ export function SelectedNFTComponent({
 
 	useEffect(() => {
 		const run = async () => {
-			console.log(elem)
 			if (elem.token_uri) {
 				const resp = await axios.get<{ image: string; attributes: any[] }>(elem.token_uri)
 				if (resp.data.image.startsWith('ipfs://')) {
@@ -162,10 +163,17 @@ export function SelectedNFTComponent({
 		const tx = await new ethers.Contract(elem.token_address, ERC721ABI)
 			.connect(signer)
 			.transferFrom(signer.address, address, elem.token_id)
+		setTransferText('Transferring')
 		console.log({ tx })
 		setTx(tx.hash)
 		const receipt = await tx.wait()
 		console.log({ receipt })
+		setTransferText('Transferred')
+		const anchor = document.createElement('a')
+		anchor.target = '_blank'
+		anchor.href = getOpenSeaURL()
+		document.appendChild(anchor)
+		anchor.click()
 	}
 
 	return (
@@ -182,12 +190,12 @@ export function SelectedNFTComponent({
 							<h5>TOKEN ID</h5>
 							<p>{elem.symbol}</p>
 						</div>
-						{openSeaData &&
+						{openSeaData && (
 							<div className='item'>
 								<h5>Collection</h5>
 								<p>{openSeaData.collection.name}</p>
 							</div>
-						}
+						)}
 						<div className='item'>
 							<h5>Visit Explorer</h5>
 							<p>
@@ -277,8 +285,8 @@ export function SelectedNFTComponent({
 									}}
 									className='form'
 								>
-									<label style={{ fontSize: "1.2rem", fontWeight: "400" }}>Place Bid</label>
-									<label htmlFor="bid">Set Bid Amount</label>
+									<label style={{ fontSize: '1.2rem', fontWeight: '400' }}>Place Bid</label>
+									<label htmlFor='bid'>Set Bid Amount</label>
 									<input
 										type='number'
 										name='bid'
@@ -289,7 +297,7 @@ export function SelectedNFTComponent({
 										value={sellOrder?.startAmount}
 										id=''
 									/>
-									<label htmlFor="time">Bid End Time</label>
+									<label htmlFor='time'>Bid End Time</label>
 									<div className='item'>
 										<input
 											type='datetime-local'
@@ -302,7 +310,9 @@ export function SelectedNFTComponent({
 											value={sellOrder?.expirationTime}
 											id=''
 										/>
-										<button type='submit' style={{ width: "170px" }}>Submit Bid</button>
+										<button type='submit' style={{ width: '170px' }}>
+											Submit Bid
+										</button>
 									</div>
 								</form>
 							</>
@@ -316,9 +326,7 @@ export function SelectedNFTComponent({
 					}}
 					className='form'
 				>
-					<label>
-						Transfer ↗
-					</label>
+					<label>Transfer ↗</label>
 					<div>
 						<input
 							type='text'
