@@ -145,34 +145,48 @@ export function SelectedNFTComponent({
 				{openSeaData && (
 					<>
 						<p>Collection Name: {openSeaData.collection.name}</p>
-						<div>
-							<p>Orders:</p>
-							{openSeaData.orders.map((elem) => {
-								if (elem.basePrice && elem.currentPrice)
-									return (
-										<>
-											<p>
-												Base Price:{' '}
-												{ethers.utils.formatEther(elem.basePrice.toString()).toString()}
-											</p>
-											<p>
-												Current Price:{' '}
-												{ethers.utils.formatEther(elem.currentPrice.toString()).toString()}
-											</p>
-											<p>
-												<button
-													onClick={() => {
-														cancelOrder(elem)
-													}}
-												>
-													Cancel Order
-												</button>
-											</p>
-										</>
-									)
-								return <></>
-							})}
-						</div>
+						{openSeaData.orders.length > 0 && (
+							<div>
+								<p>Orders:</p>
+								{openSeaData.orders.map((elem) => {
+									if (elem.basePrice && elem.currentPrice)
+										return (
+											<>
+												<p>
+													Base Price:{' '}
+													{ethers.utils.formatEther(elem.basePrice.toString()).toString()}
+												</p>
+												<p>
+													Current Price:{' '}
+													{ethers.utils.formatEther(elem.currentPrice.toString()).toString()}
+												</p>
+												<p>
+													<button
+														onClick={() => {
+															cancelOrder(elem)
+														}}
+													>
+														Cancel Order
+													</button>
+												</p>
+											</>
+										)
+									return <></>
+								})}
+							</div>
+						)}
+						{openSeaData.orders.length === 0 && (
+							<>
+								<form
+									onSubmit={(e) => {
+										e.preventDefault()
+									}}
+								>
+									<input type='text' name='' id='' />
+									<input type='submit' name='' value='Submit' id='' />
+								</form>
+							</>
+						)}
 					</>
 				)}
 				<form
