@@ -87,7 +87,6 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 20px;
 }
 
 .Form {
@@ -251,8 +250,8 @@ a {
 .nav {
   position: absolute;
   top: 0;
-  left: calc(50% - clamp(600px, 80vw, 1050px) / 2);
-  width: clamp(600px, 80vw, 1000px);
+  left: calc(50% - clamp(600px, 100vw, 1100px) / 2);
+  width: clamp(600px, 80vw, 1050px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -289,7 +288,7 @@ a {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: start;
+  justify-content: flex-start;
   width: 95%;
   margin: 0;
   padding: 0;
@@ -303,4 +302,17 @@ a {
   justify-content: center;
   width: 300px;
   margin: 10px 0 0 0;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: clamp(300px, 50vw, 600px);
+  margin: 0 25px;
+  padding: 0;
+  gap: 25px;
 }
