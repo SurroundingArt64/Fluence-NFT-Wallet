@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ethers } from 'ethers'
 import { OpenSeaPort } from 'opensea-js'
+import { Order } from 'opensea-js/lib/types'
 import React, { useEffect, useState } from 'react'
 import { ERC721ABI } from '../config'
 import { NFTItemProps } from './NFTWallet'
@@ -26,10 +27,15 @@ export function SelectedNFTComponent({
 	const [transferToAddress, setTransferTo] = useState('')
 	const [tx, setTx] = useState()
 
-	// const [openSeaData, setOpenSeaData] = useState<{
-	// 	collection: { name?: string; stats: { floor_price: number } }
-	// 	sellOrders: { basePrice: ethers.BigNumberish; currentPrice: ethers.BigNumberish }[]
-	// }>()
+	const [openSeaData, setOpenSeaData] = useState<{
+		collection: { name?: string; stats?: { floor_price?: number } }
+		orders: Order[]
+	}>()
+
+	const cancelOrder = async (order: Order) => {
+		seaport?.cancelOrder({ order, accountAddress: signer.address })
+	}
+
 	useEffect(() => {
 		const run = async () => {
 			console.log(elem)
@@ -69,7 +75,8 @@ export function SelectedNFTComponent({
 		const run = async () => {
 			if (seaport && elem) {
 				const resp = await seaport.api.getAsset({ tokenAddress: elem.token_address, tokenId: elem.token_id })
-				console.log({ data: resp })
+				console.log({ resp })
+				setOpenSeaData(resp as any)
 			}
 		}
 		run()
@@ -135,6 +142,39 @@ export function SelectedNFTComponent({
 				</div>
 			</div>
 			<div className='options'>
+				{openSeaData && (
+					<>
+						<p>Collection Name: {openSeaData.collection.name}</p>
+						<div>
+							<p>Orders:</p>
+							{openSeaData.orders.map((elem) => {
+								if (elem.basePrice && elem.currentPrice)
+									return (
+										<>
+											<p>
+												Base Price:{' '}
+												{ethers.utils.formatEther(elem.basePrice.toString()).toString()}
+											</p>
+											<p>
+												Current Price:{' '}
+												{ethers.utils.formatEther(elem.currentPrice.toString()).toString()}
+											</p>
+											<p>
+												<button
+													onClick={() => {
+														cancelOrder(elem)
+													}}
+												>
+													Cancel Order
+												</button>
+											</p>
+										</>
+									)
+								return <></>
+							})}
+						</div>
+					</>
+				)}
 				<form
 					onClick={(e) => {
 						e.preventDefault()
@@ -179,6 +219,6 @@ export function SelectedNFTComponent({
 					</div>
 				</form>
 			</div>
-		</div >
+		</div>
 	)
 }
